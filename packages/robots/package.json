@@ -1,0 +1,52 @@
+{
+  "name": "@obscrd/robots",
+  "version": "0.0.1",
+  "description": "AI crawler blocking — generate robots.txt, meta tags, and HTTP headers for 30+ AI bots",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@obscrd/typescript-config": "workspace:*",
+    "tsup": "^8.4.0"
+  },
+  "keywords": [
+    "robots-txt",
+    "ai-crawler",
+    "gptbot",
+    "claudebot",
+    "web-scraping",
+    "bot-blocking"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obscrd/obscrd.git",
+    "directory": "packages/robots"
+  },
+  "homepage": "https://obscrd.dev",
+  "bugs": "https://github.com/obscrd/obscrd/issues"
+}

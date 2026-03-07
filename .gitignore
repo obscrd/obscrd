@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs
+.output
+.nitro
+build
+dist
+
+# Environment files (use .env.example as template)
+.env
+.env.*
+!.env.example
+
+# IDE/Editor
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+bun-debug.log*
+
+# Testing/Coverage
+coverage
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+
+# Worktrees
+.worktrees
+
+# Certificates/Keys
+*.pem
+
+# Turbo
+.turbo

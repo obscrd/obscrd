@@ -1,0 +1,31 @@
+{
+  "name": "obscrd",
+  "private": true,
+  "packageManager": "bun@1.2.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter './packages/*' build",
+    "dev": "bun run --filter './apps/*' dev",
+    "dev:demo": "bun run --filter demo dev",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "bun run --filter '*' typecheck",
+    "clean": "rm -rf packages/*/dist apps/*/dist node_modules packages/*/node_modules apps/*/node_modules",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "typescript": "^5.8.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,json,css}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
+  }
+}

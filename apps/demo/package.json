@@ -1,0 +1,9 @@
+{
+  "name": "demo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Demo app coming soon'",
+    "build": "echo 'Demo app coming soon'"
+  }
+}

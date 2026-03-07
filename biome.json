@@ -1,0 +1,112 @@
+{
+  "root": true,
+  "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/.next",
+      "!**/.output",
+      "!**/.nitro",
+      "!**/coverage",
+      "!**/*.log",
+      "!**/pnpm-lock.yaml",
+      "!**/routeTree.gen.ts"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noUnknownAtRules": {
+          "level": "warn",
+          "options": {
+            "ignore": [
+              "source",
+              "custom-variant",
+              "theme",
+              "apply",
+              "layer",
+              "tailwind",
+              "responsive",
+              "variants",
+              "screen"
+            ]
+          }
+        },
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "warn",
+        "noDocumentCookie": "warn"
+      },
+      "correctness": {
+        "noChildrenProp": "off",
+        "useExhaustiveDependencies": "warn"
+      },
+      "a11y": {
+        "noLabelWithoutControl": "off",
+        "useSemanticElements": "off",
+        "useKeyWithClickEvents": "off",
+        "noRedundantAlt": "warn",
+        "noSvgWithoutTitle": "warn",
+        "useFocusableInteractive": "warn",
+        "useAriaPropsForRole": "warn"
+      },
+      "style": {
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 120,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [[":NODE:"], [":PACKAGE:", "!@/**"], ["@/**"], [":PATH:"]]
+          }
+        }
+      }
+    }
+  }
+}
