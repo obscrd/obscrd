@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.1
+## 0.1.2
 
 ### @obscrd/core
 - Seed-based text obfuscation engine with three protection levels (light, medium, maximum)
