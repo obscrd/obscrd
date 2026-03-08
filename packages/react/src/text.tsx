@@ -1,4 +1,7 @@
+import { obfuscateText } from '@obscrd/core'
 import type { ReactNode } from 'react'
+import { useMemo } from 'react'
+import { useObscrdContext } from './provider'
 
 export interface ProtectedTextProps {
   children: ReactNode
@@ -10,7 +13,20 @@ export interface ProtectedTextProps {
   className?: string
 }
 
-export function ProtectedText({ children, as: Tag = 'span', className }: ProtectedTextProps) {
-  // TODO: Implement obfuscation using core engine + CSS reconstitution
-  return <Tag className={className}>{children}</Tag>
+export function ProtectedText({ children, level, as: Tag = 'span', className }: ProtectedTextProps) {
+  const { config } = useObscrdContext()
+  const text = typeof children === 'string' ? children : String(children)
+  const effectiveLevel = level ?? config.level ?? 'medium'
+
+  const result = useMemo(
+    () => obfuscateText(text, { seed: config.seed, level: effectiveLevel }),
+    [text, config.seed, effectiveLevel],
+  )
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: result.css }} />
+      <Tag className={className} aria-label={result.ariaText} dangerouslySetInnerHTML={{ __html: result.html }} />
+    </>
+  )
 }

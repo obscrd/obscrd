@@ -1,5 +1,6 @@
 import { deriveSeed } from './seed'
 import type { ObfuscationResult } from './types'
+import { escapeHtml, fisherYatesShuffle, mulberry32, seedToNumber } from './utils'
 
 export interface ObfuscateOptions {
   /** The seed for deterministic obfuscation */
@@ -8,42 +9,13 @@ export interface ObfuscateOptions {
   level?: 'light' | 'medium' | 'maximum'
 }
 
-// ── PRNG ──
-
-function mulberry32(seed: number): () => number {
-  let s = seed | 0
-  return () => {
-    s = (s + 0x6d2b79f5) | 0
-    let t = Math.imul(s ^ (s >>> 15), 1 | s)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 0x100000000
-  }
-}
-
-function seedToNumber(hex: string): number {
-  return Number.parseInt(hex.slice(0, 8), 16) || 0x12345678
-}
-
-// ── Shuffle ──
-
-function fisherYatesShuffle<T>(arr: T[], rng: () => number): T[] {
-  const shuffled = [...arr]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
-
 // ── Segments ──
 
-// Split text into words (preserving trailing whitespace with each word)
 function splitWords(text: string): string[] {
   const matches = text.match(/\S+\s*/g)
   return matches ?? [text]
 }
 
-// Split a word into individual characters
 function splitChars(word: string): string[] {
   return [...word]
 }
@@ -64,7 +36,6 @@ function buildDecoySpan(rng: () => number): string {
 
 // ── Core ──
 
-// Build character-level obfuscation within a single word (for medium/maximum)
 function obfuscateWord(word: string, rng: () => number, level: 'medium' | 'maximum'): string {
   const chars = splitChars(word)
   const indices = chars.map((_, i) => i)
@@ -75,7 +46,9 @@ function obfuscateWord(word: string, rng: () => number, level: 'medium' | 'maxim
     const escaped = escapeHtml(chars[idx])
     spans.push(`<span data-o="${idx}" style="order:${idx}">${escaped}</span>`)
 
-    spans.push(buildDecoySpan(rng))
+    if (rng() > 0.4) {
+      spans.push(buildDecoySpan(rng))
+    }
 
     if (level === 'maximum') {
       const zwc = rng() > 0.5 ? '\u200d' : '\u200c'
@@ -99,7 +72,6 @@ export function obfuscateText(text: string, options: ObfuscateOptions): Obfuscat
   const wordIndices = words.map((_, i) => i)
   const shuffledWordIndices = fisherYatesShuffle(wordIndices, rng)
 
-  // Outer level: word-spans in shuffled DOM order, order property restores visual sequence
   const wordSpans: string[] = []
 
   for (const wi of shuffledWordIndices) {
@@ -107,10 +79,8 @@ export function obfuscateText(text: string, options: ObfuscateOptions): Obfuscat
 
     let inner: string
     if (level === 'light') {
-      // Light: no character-level shuffling, just word-level DOM reorder
       inner = escapeHtml(word)
     } else {
-      // Medium/maximum: also shuffle characters within each word
       inner = obfuscateWord(word, rng, level)
     }
 
@@ -123,10 +93,4 @@ export function obfuscateText(text: string, options: ObfuscateOptions): Obfuscat
   const css = `.${cls}{display:flex;flex-wrap:wrap;${userSelect}}`
 
   return { html, css, ariaText: text, contentId }
-}
-
-// ── Helpers ──
-
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }

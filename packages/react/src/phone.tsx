@@ -1,3 +1,6 @@
+import { obfuscatePhone } from '@obscrd/core'
+import { useMemo } from 'react'
+
 export interface ProtectedPhoneProps {
   phone: string
   children?: string
@@ -5,6 +8,12 @@ export interface ProtectedPhoneProps {
 }
 
 export function ProtectedPhone({ phone, children, className }: ProtectedPhoneProps) {
-  // TODO: Implement phone obfuscation
-  return <span className={className}>{children ?? phone}</span>
+  const result = useMemo(() => obfuscatePhone(phone), [phone])
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: result.css }} />
+      <span className={className} aria-label={children ?? phone} dangerouslySetInnerHTML={{ __html: result.html }} />
+    </>
+  )
 }

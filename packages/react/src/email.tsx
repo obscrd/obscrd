@@ -1,3 +1,6 @@
+import { obfuscateEmail } from '@obscrd/core'
+import { useMemo } from 'react'
+
 export interface ProtectedEmailProps {
   email: string
   /** Optional display text (defaults to the email) */
@@ -6,6 +9,12 @@ export interface ProtectedEmailProps {
 }
 
 export function ProtectedEmail({ email, children, className }: ProtectedEmailProps) {
-  // TODO: Implement email obfuscation
-  return <span className={className}>{children ?? email}</span>
+  const result = useMemo(() => obfuscateEmail(email), [email])
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: result.css }} />
+      <span className={className} aria-label={children ?? email} dangerouslySetInnerHTML={{ __html: result.html }} />
+    </>
+  )
 }

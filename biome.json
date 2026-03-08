@@ -91,6 +91,17 @@
       "trailingCommas": "none"
     }
   },
+  "overrides": [
+    {
+      "includes": ["packages/react/**"],
+      "linter": {
+        "rules": {
+          "security": { "noDangerouslySetInnerHtml": "off" },
+          "a11y": { "useAriaPropsSupportedByRole": "off" }
+        }
+      }
+    }
+  ],
   "css": {
     "parser": {
       "tailwindDirectives": true

@@ -1,37 +1,7 @@
 import { deriveSeed } from './seed'
-
-// ── PRNG ──
-
-function mulberry32(seed: number): () => number {
-  let s = seed | 0
-  return () => {
-    s = (s + 0x6d2b79f5) | 0
-    let t = Math.imul(s ^ (s >>> 15), 1 | s)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 0x100000000
-  }
-}
-
-function seedToNumber(hex: string): number {
-  return Number.parseInt(hex.slice(0, 8), 16) || 0x12345678
-}
-
-// ── Shuffle ──
-
-function fisherYatesShuffle<T>(arr: T[], rng: () => number): T[] {
-  const shuffled = [...arr]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
+import { escapeHtml, fisherYatesShuffle, mulberry32, seedToNumber } from './utils'
 
 // ── Helpers ──
-
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-}
 
 function generateDecoyChar(rng: () => number, chars: string): string {
   return chars[Math.floor(rng() * chars.length)]
@@ -108,7 +78,7 @@ export function obfuscateAddress(address: string): { html: string; css: string }
 
     if (rng() > 0.5) {
       const dw = decoyWords[Math.floor(rng() * decoyWords.length)]
-      wordSpans.push(`<span aria-hidden="true" style="order:9999;display:none">${dw}</span>`)
+      wordSpans.push(`<span aria-hidden="true" style="display:none">${dw}</span>`)
     }
   }
 
