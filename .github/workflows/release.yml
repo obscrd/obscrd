@@ -67,9 +67,23 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Tag and commit
+      # Tag and commit — only persist version bumps, not publish mutations
       - name: Commit and tag
         run: |
+          # Restore workspace refs that were modified for publish
+          git checkout -- packages/*/package.json
+
+          # Only bump the version field in each package.json
+          VERSION=${{ inputs.version }}
+          for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
+              pkg.version = '${VERSION}';
+              fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
+            "
+          done
+
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add -A

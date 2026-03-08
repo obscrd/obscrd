@@ -31,7 +31,7 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@obscrd/typescript-config": "^0.1.0",
+    "@obscrd/typescript-config": "workspace:*",
     "@types/bun": "^1.3.10",
     "tsup": "^8.4.0"
   },
