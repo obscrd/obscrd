@@ -1,5 +1,5 @@
 import { createClipboardInterceptor } from '@obscrd/core'
-import { type ReactNode, useEffect, useRef } from 'react'
+import { type ReactNode, useEffect } from 'react'
 import { useObscrdContext } from './provider'
 
 export interface ProtectedBlockProps {
@@ -9,7 +9,6 @@ export interface ProtectedBlockProps {
 
 export function ProtectedBlock({ children, className }: ProtectedBlockProps) {
   const { config } = useObscrdContext()
-  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (config.clipboard === false) return
@@ -19,9 +18,5 @@ export function ProtectedBlock({ children, className }: ProtectedBlockProps) {
     return () => interceptor.detach()
   }, [config.clipboard])
 
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  )
+  return <div className={className}>{children}</div>
 }

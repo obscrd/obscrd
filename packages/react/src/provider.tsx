@@ -1,5 +1,5 @@
 import type { ObscrdConfig } from '@obscrd/core'
-import { createContext, type ReactNode, useContext } from 'react'
+import { createContext, type ReactNode, useContext, useMemo } from 'react'
 
 export interface ObscrdContextValue {
   config: ObscrdConfig
@@ -21,8 +21,18 @@ export interface ObscrdProviderProps {
   honeypot?: boolean
 }
 
-export function ObscrdProvider({ children, seed, level = 'medium', ...rest }: ObscrdProviderProps) {
-  const config: ObscrdConfig = { seed, level, ...rest }
+export function ObscrdProvider({
+  children,
+  seed,
+  level = 'medium',
+  clipboard,
+  devtools,
+  honeypot,
+}: ObscrdProviderProps) {
+  const config = useMemo<ObscrdConfig>(
+    () => ({ seed, level, clipboard, devtools, honeypot }),
+    [seed, level, clipboard, devtools, honeypot],
+  )
 
   return <ObscrdContext.Provider value={{ config }}>{children}</ObscrdContext.Provider>
 }

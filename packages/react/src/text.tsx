@@ -1,6 +1,5 @@
 import { obfuscateText } from '@obscrd/core'
-import type { ReactNode } from 'react'
-import { useMemo } from 'react'
+import { type ReactNode, useMemo } from 'react'
 import { useObscrdContext } from './provider'
 
 export interface ProtectedTextProps {
