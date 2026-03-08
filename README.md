@@ -31,7 +31,7 @@
 
 ```bash
 npm install @obscrd/react
-npx @obscrd/core init
+npx obscrd init
 ```
 
 ```tsx

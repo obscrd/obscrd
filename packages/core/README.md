@@ -23,22 +23,22 @@ const result = obfuscateText('Sensitive content', { seed, level: 'medium' })
 
 ## CLI
 
-### `npx @obscrd/core init`
+### `npx obscrd init`
 
 Generate a project seed and write it to `.env`:
 
 ```bash
-npx @obscrd/core init
+npx obscrd init
 # ✓ Generated seed: a7f3b2c8e1d9f4a6...
 # ✓ Written to .env as OBSCRD_SEED
 ```
 
-### `npx @obscrd/core seed`
+### `npx obscrd seed`
 
 Print a random seed (useful for piping):
 
 ```bash
-npx @obscrd/core seed
+npx obscrd seed
 ```
 
 ## API

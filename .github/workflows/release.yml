@@ -36,7 +36,7 @@ jobs:
       - name: Set versions
         run: |
           VERSION=${{ inputs.version }}
-          for f in packages/core/package.json packages/react/package.json packages/robots/package.json; do
+          for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
             node -e "
               const fs = require('fs');
               const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
@@ -58,6 +58,11 @@ jobs:
 
       - name: Publish @obscrd/robots
         run: cd packages/robots && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish obscrd (CLI)
+        run: cd packages/cli && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

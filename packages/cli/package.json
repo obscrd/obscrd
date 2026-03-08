@@ -1,0 +1,19 @@
+{
+  "name": "obscrd",
+  "version": "0.1.0",
+  "description": "CLI for Obscrd — content protection SDK",
+  "bin": {
+    "obscrd": "./bin.cjs"
+  },
+  "files": [
+    "bin.cjs"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obscrd/obscrd.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://obscrd.dev",
+  "bugs": "https://github.com/obscrd/obscrd/issues"
+}

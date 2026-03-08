@@ -15,7 +15,7 @@ Requires `react >= 18.0.0` and `react-dom >= 18.0.0` as peer dependencies.
 Generate a project seed:
 
 ```bash
-npx @obscrd/core init
+npx obscrd init
 ```
 
 Then use it in your app:
