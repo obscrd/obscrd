@@ -7,13 +7,14 @@ export interface ProtectedPhoneProps {
   phone: string
   children?: string
   className?: string
+  style?: React.CSSProperties
   /** Use sms: instead of tel: */
   sms?: boolean
   /** Additional click handler */
   onClick?: React.MouseEventHandler<HTMLAnchorElement>
 }
 
-export function ProtectedPhone({ phone, children, className, sms, onClick }: ProtectedPhoneProps) {
+export function ProtectedPhone({ phone, children, className, style, sms, onClick }: ProtectedPhoneProps) {
   const { config } = useObscrdContext()
   const result = useMemo(() => obfuscatePhone(phone, config.seed), [phone, config.seed])
   const [active, setActive] = useState(false)
@@ -26,6 +27,8 @@ export function ProtectedPhone({ phone, children, className, sms, onClick }: Pro
       <a
         href={href}
         className={className}
+        style={style ? { cursor: 'pointer', ...style } : { cursor: 'pointer' }}
+        rel="noopener noreferrer"
         onClick={onClick}
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}

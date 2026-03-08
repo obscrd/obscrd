@@ -43,4 +43,16 @@ describe('ProtectedPhone', () => {
     const hidden = container.querySelector('[aria-hidden="true"]')
     expect(hidden).not.toBeNull()
   })
+
+  test('anchor has cursor pointer style', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    const anchor = container.querySelector('a')
+    expect(anchor?.style.cursor).toBe('pointer')
+  })
+
+  test('anchor has rel="noopener noreferrer"', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    const anchor = container.querySelector('a')
+    expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer')
+  })
 })

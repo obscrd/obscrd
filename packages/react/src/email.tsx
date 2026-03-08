@@ -20,6 +20,7 @@ export interface ProtectedEmailProps {
   /** Optional display text (defaults to the email) */
   children?: string
   className?: string
+  style?: React.CSSProperties
   /** Email subject line */
   subject?: string
   /** Email body text */
@@ -32,7 +33,17 @@ export interface ProtectedEmailProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>
 }
 
-export function ProtectedEmail({ email, children, className, subject, body, cc, bcc, onClick }: ProtectedEmailProps) {
+export function ProtectedEmail({
+  email,
+  children,
+  className,
+  style,
+  subject,
+  body,
+  cc,
+  bcc,
+  onClick,
+}: ProtectedEmailProps) {
   const { config } = useObscrdContext()
   const result = useMemo(() => obfuscateEmail(email, config.seed), [email, config.seed])
   const [active, setActive] = useState(false)
@@ -45,6 +56,8 @@ export function ProtectedEmail({ email, children, className, subject, body, cc, 
       <a
         href={href}
         className={className}
+        style={style ? { cursor: 'pointer', ...style } : { cursor: 'pointer' }}
+        rel="noopener noreferrer"
         onClick={onClick}
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
