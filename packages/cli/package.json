@@ -1,6 +1,6 @@
 {
   "name": "obscrd",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "CLI for Obscrd — content protection SDK",
   "bin": {
     "obscrd": "./bin.cjs"

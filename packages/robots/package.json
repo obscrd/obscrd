@@ -1,6 +1,6 @@
 {
   "name": "@obscrd/robots",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "AI crawler blocking — generate robots.txt, meta tags, and HTTP headers for 30+ AI bots",
   "type": "module",
   "main": "./dist/index.cjs",
