@@ -12,12 +12,20 @@ Requires `react >= 18.0.0` and `react-dom >= 18.0.0` as peer dependencies.
 
 ## Quick Start
 
+Generate a project seed:
+
+```bash
+npx @obscrd/core init
+```
+
+Then use it in your app:
+
 ```tsx
 import { ObscrdProvider, ProtectedText } from '@obscrd/react'
 
 function App() {
   return (
-    <ObscrdProvider seed="your-project-seed">
+    <ObscrdProvider seed={process.env.OBSCRD_SEED}>
       <ProtectedText>This text is protected from scrapers</ProtectedText>
     </ObscrdProvider>
   )
@@ -32,7 +40,7 @@ Wraps your app and provides configuration to all protected components.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `seed` | `string` | **required** | Project seed for deterministic obfuscation |
+| `seed` | `string` | random | Project seed for deterministic obfuscation |
 | `level` | `'light' \| 'medium' \| 'maximum'` | `'medium'` | Protection level |
 | `clipboard` | `boolean` | — | Enable clipboard interception |
 | `devtools` | `boolean` | — | Enable DevTools detection |

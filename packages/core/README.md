@@ -21,6 +21,26 @@ const result = obfuscateText('Sensitive content', { seed, level: 'medium' })
 // result.ariaText → clean text for screen readers
 ```
 
+## CLI
+
+### `npx @obscrd/core init`
+
+Generate a project seed and write it to `.env`:
+
+```bash
+npx @obscrd/core init
+# ✓ Generated seed: a7f3b2c8e1d9f4a6...
+# ✓ Written to .env as OBSCRD_SEED
+```
+
+### `npx @obscrd/core seed`
+
+Print a random seed (useful for piping):
+
+```bash
+npx @obscrd/core seed
+```
+
 ## API
 
 ### `createSeed()`

@@ -31,8 +31,12 @@
     "packages/core": {
       "name": "@obscrd/core",
       "version": "0.0.1",
+      "bin": {
+        "obscrd": "./dist/cli.cjs",
+      },
       "devDependencies": {
         "@obscrd/typescript-config": "workspace:*",
+        "@types/node": "^25.3.5",
         "tsup": "^8.4.0",
       },
     },
@@ -527,7 +531,7 @@
 
     "undici": ["undici@7.22.0", "", {}, "sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg=="],
 
-    "undici-types": ["undici-types@7.22.0", "", {}, "sha512-RKZvifiL60xdsIuC80UY0dq8Z7DbJUV8/l2hOVbyZAxBzEeQU4Z58+4ZzJ6WN2Lidi9KzT5EbiGX+PI/UGYuRw=="],
+    "undici-types": ["undici-types@7.18.2", "", {}, "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w=="],
 
     "update-browserslist-db": ["update-browserslist-db@1.2.3", "", { "dependencies": { "escalade": "^3.2.0", "picocolors": "^1.1.1" }, "peerDependencies": { "browserslist": ">= 4.21.0" }, "bin": { "update-browserslist-db": "cli.js" } }, "sha512-Js0m9cx+qOgDxo0eMiFGEueWztz+d4+M3rGlmKPT+T4IS/jP4ylw3Nwpu6cpTTP8R1MAC1kF4VbdLt3ARf209w=="],
 
@@ -553,7 +557,7 @@
 
     "@babel/helper-compilation-targets/lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
 
-    "@types/node/undici-types": ["undici-types@7.18.2", "", {}, "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w=="],
+    "@types/jsdom/undici-types": ["undici-types@7.22.0", "", {}, "sha512-RKZvifiL60xdsIuC80UY0dq8Z7DbJUV8/l2hOVbyZAxBzEeQU4Z58+4ZzJ6WN2Lidi9KzT5EbiGX+PI/UGYuRw=="],
 
     "jsdom/parse5": ["parse5@8.0.0", "", { "dependencies": { "entities": "^6.0.0" } }, "sha512-9m4m5GSgXjL4AjumKzq1Fgfp3Z8rsvjRNbnkVwfu2ImRqE5D0LnY2QfDen18FSY9C573YU5XxSapdHZTZ2WolA=="],
 

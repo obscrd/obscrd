@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Content protection engine — obfuscate text, trap scrapers, defend against AI bots",
   "type": "module",
+  "bin": {
+    "obscrd": "./dist/cli.cjs"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,6 +28,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "postbuild": "chmod +x dist/cli.cjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
@@ -32,6 +36,7 @@
   },
   "devDependencies": {
     "@obscrd/typescript-config": "workspace:*",
+    "@types/node": "^25.3.5",
     "tsup": "^8.4.0"
   },
   "keywords": [

@@ -31,6 +31,7 @@
 
 ```bash
 npm install @obscrd/react
+npx @obscrd/core init
 ```
 
 ```tsx
@@ -38,7 +39,7 @@ import { ObscrdProvider, ProtectedText, ProtectedEmail } from '@obscrd/react'
 
 function App() {
   return (
-    <ObscrdProvider seed="your-project-seed">
+    <ObscrdProvider seed={process.env.OBSCRD_SEED}>
       <ProtectedText>
         This text is readable by humans but scrambled for scrapers.
       </ProtectedText>
