@@ -32,13 +32,17 @@ jobs:
             sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" "$f"
           done
 
-      # Bump versions in all packages
+      # Bump versions in all packages (bypass npm version to avoid workspace: validation)
       - name: Set versions
         run: |
-          for pkg in packages/core packages/react packages/robots; do
-            cd $pkg
-            npm version ${{ inputs.version }} --no-git-tag-version
-            cd ../..
+          VERSION=${{ inputs.version }}
+          for f in packages/core/package.json packages/react/package.json packages/robots/package.json; do
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
+              pkg.version = '$VERSION';
+              fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
+            "
           done
 
       # Publish in dependency order
