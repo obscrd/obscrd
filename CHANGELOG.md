@@ -14,6 +14,7 @@
 - `ProtectedText` — text obfuscation with CSS reconstitution
 - `ProtectedEmail` / `ProtectedPhone` — contact protection with sr-only accessibility
 - `ProtectedImage` — canvas-based image rendering (no `<img>` in DOM)
+- `ProtectedLink` — hides href from scrapers until user interaction (hover/focus)
 - `ProtectedBlock` — clipboard interception wrapper
 - `Honeypot` — invisible AI scraper traps
 - `Breadcrumb` — forensic tracking markers
