@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 import { ProtectedText } from '../text'
 import { renderWithProvider } from './render'
-import { describe, expect, test } from 'bun:test'
+import { describe, expect, mock, test } from 'bun:test'
 
 describe('ProtectedText', () => {
   test('renders without crashing', () => {
@@ -30,7 +30,6 @@ describe('ProtectedText', () => {
   test('respects level prop override', () => {
     const light = renderWithProvider(createElement(ProtectedText, { level: 'light' }, 'Hello'))
     const max = renderWithProvider(createElement(ProtectedText, { level: 'maximum' }, 'Hello'))
-    // Maximum level adds user-select:none in the CSS
     const maxStyle = max.querySelector('style')?.textContent ?? ''
     const lightStyle = light.querySelector('style')?.textContent ?? ''
     expect(maxStyle).toContain('user-select:none')
@@ -48,5 +47,16 @@ describe('ProtectedText', () => {
     const container = renderWithProvider(createElement(ProtectedText, { className: 'custom' }, 'Hi'))
     const el = container.querySelector('.custom')
     expect(el).not.toBeNull()
+  })
+
+  test('warns on non-string children in development', () => {
+    const warnSpy = mock(() => {})
+    const origWarn = console.warn
+    console.warn = warnSpy
+
+    renderWithProvider(createElement(ProtectedText, null, 42 as any))
+
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('[obscrd] ProtectedText received non-string children'))
+    console.warn = origWarn
   })
 })

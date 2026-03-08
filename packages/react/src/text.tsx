@@ -14,6 +14,13 @@ export interface ProtectedTextProps {
 
 export function ProtectedText({ children, level, as: Tag = 'span', className }: ProtectedTextProps) {
   const { config } = useObscrdContext()
+
+  if (process.env.NODE_ENV !== 'production' && typeof children !== 'string') {
+    console.warn(
+      '[obscrd] ProtectedText received non-string children. Only plain text is supported — React elements will be converted with String(), which may produce unexpected results.',
+    )
+  }
+
   const text = typeof children === 'string' ? children : String(children)
   const effectiveLevel = level ?? config.level ?? 'medium'
 

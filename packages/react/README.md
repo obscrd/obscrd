@@ -43,10 +43,13 @@ Wraps your app and provides configuration to all protected components.
 | `seed` | `string` | random | Project seed for deterministic obfuscation |
 | `level` | `'light' \| 'medium' \| 'maximum'` | `'medium'` | Protection level |
 | `clipboard` | `boolean` | — | Enable clipboard interception |
-| `devtools` | `boolean` | — | Enable DevTools detection |
-| `honeypot` | `boolean` | — | Enable AI honeypot injection |
+| `devtools` | `boolean` | — | Enable DevTools detection (auto-starts detector) |
+| `honeypot` | `boolean` | — | Auto-inject AI honeypot at provider level |
 | `copyrightNotice` | `string` | — | Custom copyright notice for honeypots |
 | `contentIdPrefix` | `string` | — | Content ID prefix for forensic tracking |
+| `onDevToolsDetected` | `() => void` | `console.warn` | Callback when DevTools are detected |
+
+When `devtools` is enabled, the provider automatically starts a DevTools detector and calls `onDevToolsDetected` (or logs a warning) when detected. When `honeypot` is enabled, the provider auto-injects a honeypot element — no need to manually place a `<Honeypot>` component.
 
 ### `<ProtectedText>`
 
@@ -69,11 +72,13 @@ Obfuscates text content into scrambled HTML that renders correctly.
 
 ### `<ProtectedEmail>`
 
-Obfuscates an email address using RTL text reversal. Requires `<ObscrdProvider>` as a parent — uses the project seed for deterministic obfuscation.
+Renders a clickable `<a>` tag that reveals a `mailto:` href on interaction. The email is obfuscated using RTL text reversal — bots see `href="#"` in static HTML, while humans get the real link on hover/focus.
 
 ```tsx
 <ProtectedEmail email="user@example.com" />
-<ProtectedEmail email="user@example.com">Contact us</ProtectedEmail>
+<ProtectedEmail email="user@example.com" subject="Hello" body="Hi there">
+  Contact us
+</ProtectedEmail>
 ```
 
 | Prop | Type | Description |
@@ -81,16 +86,28 @@ Obfuscates an email address using RTL text reversal. Requires `<ObscrdProvider>`
 | `email` | `string` | Email address to protect |
 | `children` | `string` | Optional display text (used as screen-reader-only label) |
 | `className` | `string` | CSS class |
+| `subject` | `string` | Email subject line |
+| `body` | `string` | Email body text |
+| `cc` | `string` | CC recipients (comma-separated) |
+| `bcc` | `string` | BCC recipients (comma-separated) |
+| `onClick` | `MouseEventHandler` | Additional click handler |
 
 ### `<ProtectedPhone>`
 
-Obfuscates a phone number using RTL text reversal. Requires `<ObscrdProvider>` as a parent.
+Renders a clickable `<a>` tag that reveals a `tel:` (or `sms:`) href on interaction. The phone number is obfuscated using RTL text reversal.
 
 ```tsx
 <ProtectedPhone phone="+1-555-123-4567" />
+<ProtectedPhone phone="+1-555-123-4567" sms>Text us</ProtectedPhone>
 ```
 
-Same props as `ProtectedEmail` but with `phone` instead of `email`.
+| Prop | Type | Description |
+|------|------|-------------|
+| `phone` | `string` | Phone number to protect |
+| `children` | `string` | Optional display text (used as screen-reader-only label) |
+| `className` | `string` | CSS class |
+| `sms` | `boolean` | Use `sms:` instead of `tel:` |
+| `onClick` | `MouseEventHandler` | Additional click handler |
 
 ### `<ProtectedBlock>`
 
@@ -109,7 +126,7 @@ Wraps content and attaches clipboard interception (when `clipboard` is enabled o
 
 ### `<ProtectedImage>`
 
-Renders an image to a `<canvas>` element — no `<img>` tag in the DOM, so scrapers can't grab the URL. Includes right-click and drag protection.
+Renders an image to a `<canvas>` element — no `<img>` tag in the DOM, so scrapers can't grab the URL. Includes right-click and drag protection. Shows an error fallback with the alt text when the image fails to load.
 
 ```tsx
 <ProtectedImage src="/photo.jpg" alt="A photo" width={800} height={600} />

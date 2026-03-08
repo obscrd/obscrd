@@ -7,7 +7,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "bun run --filter './packages/*' build",
+    "build": "bun run --filter @obscrd/core build && bun run --filter './packages/*' build",
     "dev": "bun run --filter './apps/*' dev",
     "dev:demo": "bun run --filter demo dev",
     "lint": "biome check .",

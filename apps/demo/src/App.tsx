@@ -1,6 +1,5 @@
 import {
   Breadcrumb,
-  Honeypot,
   ObscrdProvider,
   ProtectedBlock,
   ProtectedEmail,
@@ -11,7 +10,7 @@ import {
 
 export function App() {
   return (
-    <ObscrdProvider seed="demo-seed-2024">
+    <ObscrdProvider seed="demo-seed-2024" devtools honeypot copyrightNotice="Obscrd Demo">
       <main>
         <h1>Obscrd Demo</h1>
         <p>View source or inspect the DOM to see obfuscation in action.</p>
@@ -30,16 +29,13 @@ export function App() {
         {/* ── Contact Protection ── */}
         <section>
           <h2>Contact Protection</h2>
-          <ProtectedEmail email="hello@obscrd.dev" />
+          <ProtectedEmail
+            email="hello@obscrd.dev"
+            subject="Hello from the demo"
+            body="I found your site through the Obscrd demo."
+          />
           <br />
           <ProtectedPhone phone="+1-555-867-5309" />
-        </section>
-
-        {/* ── Honeypot ── */}
-        <section>
-          <h2>AI Honeypot</h2>
-          <p>There's a hidden honeypot below — inspect the DOM to see it.</p>
-          <Honeypot copyrightNotice="Obscrd Demo" />
         </section>
 
         {/* ── Clipboard Protection ── */}
@@ -60,7 +56,13 @@ export function App() {
         {/* ── Image Protection ── */}
         <section>
           <h2>Image Protection</h2>
-          <ProtectedImage src="https://picsum.photos/400/300" alt="Demo protected image" />
+          <ProtectedImage src="https://picsum.photos/400/300" alt="Demo protected image" width={400} height={300} />
+          <ProtectedImage
+            src="https://broken.invalid/nope.jpg"
+            alt="This image intentionally fails"
+            width={400}
+            height={150}
+          />
         </section>
       </main>
     </ObscrdProvider>

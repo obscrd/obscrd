@@ -21,3 +21,5 @@ Object.defineProperty(globalThis, 'HTMLSpanElement', { value: dom.window.HTMLSpa
 Object.defineProperty(globalThis, 'HTMLImageElement', { value: dom.window.HTMLImageElement, writable: true })
 Object.defineProperty(globalThis, 'HTMLStyleElement', { value: dom.window.HTMLStyleElement, writable: true })
 Object.defineProperty(globalThis, 'HTMLParagraphElement', { value: dom.window.HTMLParagraphElement, writable: true })
+Object.defineProperty(globalThis, 'HTMLCanvasElement', { value: dom.window.HTMLCanvasElement, writable: true })
+Object.defineProperty(globalThis, 'HTMLAnchorElement', { value: dom.window.HTMLAnchorElement, writable: true })

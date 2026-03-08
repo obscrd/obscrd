@@ -1,12 +1,38 @@
 import { createElement } from 'react'
-import { ProtectedEmail } from '../email'
+import { buildMailto, ProtectedEmail } from '../email'
 import { renderWithProvider } from './render'
 import { describe, expect, test } from 'bun:test'
 
+describe('buildMailto', () => {
+  test('builds plain mailto', () => {
+    expect(buildMailto('a@b.com', {})).toBe('mailto:a@b.com')
+  })
+
+  test('appends subject and body', () => {
+    const url = buildMailto('a@b.com', { subject: 'Hi', body: 'Hello there' })
+    expect(url).toContain('mailto:a@b.com?')
+    expect(url).toContain('subject=Hi')
+    expect(url).toContain('body=Hello+there')
+  })
+
+  test('appends cc and bcc', () => {
+    const url = buildMailto('a@b.com', { cc: 'c@d.com', bcc: 'e@f.com' })
+    expect(url).toContain('cc=c%40d.com')
+    expect(url).toContain('bcc=e%40f.com')
+  })
+})
+
 describe('ProtectedEmail', () => {
-  test('renders without crashing', () => {
+  test('renders an <a> tag', () => {
     const container = renderWithProvider(createElement(ProtectedEmail, { email: 'test@example.com' }))
-    expect(container.innerHTML).toBeTruthy()
+    const anchor = container.querySelector('a')
+    expect(anchor).not.toBeNull()
+  })
+
+  test('href is "#" by default', () => {
+    const container = renderWithProvider(createElement(ProtectedEmail, { email: 'test@example.com' }))
+    const anchor = container.querySelector('a')
+    expect(anchor?.getAttribute('href')).toBe('#')
   })
 
   test('output contains RTL CSS', () => {

@@ -13,8 +13,12 @@ export interface ProtectedImageProps {
 export function ProtectedImage({ src, alt, width, height, className, style }: ProtectedImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [loaded, setLoaded] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
+    setLoaded(false)
+    setError(false)
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -30,8 +34,32 @@ export function ProtectedImage({ src, alt, width, height, className, style }: Pr
       ctx.drawImage(img, 0, 0, w, h)
       setLoaded(true)
     }
+    img.onerror = () => setError(true)
     img.src = src
   }, [src, width, height])
+
+  if (error) {
+    return (
+      <div
+        role="img"
+        aria-label={alt}
+        className={className}
+        style={{
+          ...style,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#666',
+          fontSize: '0.875rem',
+          background: '#f0f0f0',
+          width: width ?? 200,
+          height: height ?? 150,
+        }}
+      >
+        {alt}
+      </div>
+    )
+  }
 
   return (
     <canvas

@@ -4,9 +4,16 @@ import { renderWithProvider } from './render'
 import { describe, expect, test } from 'bun:test'
 
 describe('ProtectedPhone', () => {
-  test('renders without crashing', () => {
+  test('renders an <a> tag', () => {
     const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
-    expect(container.innerHTML).toBeTruthy()
+    const anchor = container.querySelector('a')
+    expect(anchor).not.toBeNull()
+  })
+
+  test('href is "#" by default', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    const anchor = container.querySelector('a')
+    expect(anchor?.getAttribute('href')).toBe('#')
   })
 
   test('output contains RTL CSS', () => {

@@ -1,4 +1,4 @@
-import { createSeed, type ObscrdConfig } from '@obscrd/core'
+import { createSeed, detectDevTools, generateHoneypot, type ObscrdConfig } from '@obscrd/core'
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useRef } from 'react'
 
 export interface ObscrdContextValue {
@@ -23,6 +23,8 @@ export interface ObscrdProviderProps {
   copyrightNotice?: string
   /** Content ID prefix for forensic tracking */
   contentIdPrefix?: string
+  /** Callback when DevTools are detected (requires devtools: true) */
+  onDevToolsDetected?: () => void
 }
 
 export function ObscrdProvider({
@@ -34,6 +36,7 @@ export function ObscrdProvider({
   honeypot,
   copyrightNotice,
   contentIdPrefix,
+  onDevToolsDetected,
 }: ObscrdProviderProps) {
   const fallbackSeed = useRef(createSeed())
   const resolvedSeed = seed ?? fallbackSeed.current
@@ -46,12 +49,32 @@ export function ObscrdProvider({
     }
   }, [seed])
 
+  // ── DevTools detection ──
+  useEffect(() => {
+    if (!devtools) return
+
+    const detector = detectDevTools(onDevToolsDetected ?? (() => console.warn('[obscrd] DevTools detected')))
+    detector.start()
+    return () => detector.stop()
+  }, [devtools, onDevToolsDetected])
+
   const config = useMemo<ObscrdConfig>(
     () => ({ seed: resolvedSeed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix }),
     [resolvedSeed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix],
   )
 
-  return <ObscrdContext.Provider value={{ config }}>{children}</ObscrdContext.Provider>
+  // ── Auto-injected honeypot ──
+  const honeypotHtml = useMemo(
+    () => (honeypot ? generateHoneypot({ copyrightNotice }) : ''),
+    [honeypot, copyrightNotice],
+  )
+
+  return (
+    <ObscrdContext.Provider value={{ config }}>
+      {children}
+      {honeypot && <div dangerouslySetInnerHTML={{ __html: honeypotHtml }} />}
+    </ObscrdContext.Provider>
+  )
 }
 
 export function useObscrdContext(): ObscrdContextValue {
