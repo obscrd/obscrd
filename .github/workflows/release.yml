@@ -24,6 +24,12 @@ jobs:
       - run: bun run build
       - run: bun run test
 
+      # Replace workspace:* with actual version before bumping (npm version chokes on workspace:*)
+      - name: Resolve workspace versions
+        run: |
+          VERSION=${{ inputs.version }}
+          sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" packages/react/package.json
+
       # Bump versions in all packages
       - name: Set versions
         run: |
@@ -32,12 +38,6 @@ jobs:
             npm version ${{ inputs.version }} --no-git-tag-version
             cd ../..
           done
-
-      # Replace workspace:* with actual version before publish
-      - name: Resolve workspace versions
-        run: |
-          VERSION=${{ inputs.version }}
-          sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" packages/react/package.json
 
       # Publish in dependency order
       - name: Publish @obscrd/core
