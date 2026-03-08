@@ -20,7 +20,7 @@ describe('obfuscateEmail', () => {
     const { html } = obfuscateEmail('a@b.c')
     // The real characters in the HTML should be in reversed order
     // Extract text content by stripping tags
-    const textOnly = html.replace(/<[^>]*>/g, '')
+    html.replace(/<[^>]*>/g, '')
     // Should contain reversed email chars (ignoring decoys)
     // The real chars 'a@b.c' reversed = 'c.b@a'
     // We can't easily strip decoys, but the reversed chars should be present
@@ -39,7 +39,7 @@ describe('obfuscateEmail', () => {
     const classMatch = html.match(/class="(obscrd-email-[0-9a-f]+)"/)
     expect(classMatch).not.toBeNull()
     // CSS targets the same class
-    expect(css).toContain(classMatch![1])
+    expect(css).toContain(classMatch?.[1])
   })
 
   test('generates different class names for different emails', () => {
@@ -47,7 +47,7 @@ describe('obfuscateEmail', () => {
     const r2 = obfuscateEmail('x@y.com')
     const c1 = r1.html.match(/class="(obscrd-email-[0-9a-f]+)"/)
     const c2 = r2.html.match(/class="(obscrd-email-[0-9a-f]+)"/)
-    expect(c1![1]).not.toBe(c2![1])
+    expect(c1?.[1]).not.toBe(c2?.[1])
   })
 
   test('is deterministic for the same email', () => {
@@ -55,6 +55,18 @@ describe('obfuscateEmail', () => {
     const r2 = obfuscateEmail('hello@example.com')
     expect(r1.html).toBe(r2.html)
     expect(r1.css).toBe(r2.css)
+  })
+
+  test('different seeds produce different output for the same email', () => {
+    const r1 = obfuscateEmail('hello@example.com', 'seed-a')
+    const r2 = obfuscateEmail('hello@example.com', 'seed-b')
+    expect(r1.html).not.toBe(r2.html)
+  })
+
+  test('default seed preserves backwards compatibility', () => {
+    const withDefault = obfuscateEmail('hello@example.com')
+    const withExplicit = obfuscateEmail('hello@example.com', 'contact')
+    expect(withDefault.html).toBe(withExplicit.html)
   })
 })
 
@@ -83,7 +95,7 @@ describe('obfuscatePhone', () => {
     const { html, css } = obfuscatePhone('555-1234')
     const classMatch = html.match(/class="(obscrd-phone-[0-9a-f]+)"/)
     expect(classMatch).not.toBeNull()
-    expect(css).toContain(classMatch![1])
+    expect(css).toContain(classMatch?.[1])
   })
 
   test('is deterministic for the same phone number', () => {
@@ -91,6 +103,12 @@ describe('obfuscatePhone', () => {
     const r2 = obfuscatePhone('+1-555-123-4567')
     expect(r1.html).toBe(r2.html)
     expect(r1.css).toBe(r2.css)
+  })
+
+  test('different seeds produce different output for the same phone', () => {
+    const r1 = obfuscatePhone('+1-555-123-4567', 'seed-a')
+    const r2 = obfuscatePhone('+1-555-123-4567', 'seed-b')
+    expect(r1.html).not.toBe(r2.html)
   })
 })
 
@@ -135,7 +153,7 @@ describe('obfuscateAddress', () => {
     const { html, css } = obfuscateAddress('123 Main St')
     const classMatch = html.match(/class="(obscrd-addr-[0-9a-f]+)"/)
     expect(classMatch).not.toBeNull()
-    expect(css).toContain(classMatch![1])
+    expect(css).toContain(classMatch?.[1])
   })
 
   test('is deterministic for the same address', () => {
@@ -143,5 +161,11 @@ describe('obfuscateAddress', () => {
     const r2 = obfuscateAddress('123 Main St, Springfield, IL 62701')
     expect(r1.html).toBe(r2.html)
     expect(r1.css).toBe(r2.css)
+  })
+
+  test('different seeds produce different output for the same address', () => {
+    const r1 = obfuscateAddress('123 Main St, Springfield, IL 62701', 'seed-a')
+    const r2 = obfuscateAddress('123 Main St, Springfield, IL 62701', 'seed-b')
+    expect(r1.html).not.toBe(r2.html)
   })
 })

@@ -71,6 +71,6 @@ describe('generateHoneypot', () => {
     const html2 = generateHoneypot()
     const match1 = html1.match(/Content ID: ([0-9a-f]{8})/)
     const match2 = html2.match(/Content ID: ([0-9a-f]{8})/)
-    expect(match1![1]).not.toBe(match2![1])
+    expect(match1?.[1]).not.toBe(match2?.[1])
   })
 })

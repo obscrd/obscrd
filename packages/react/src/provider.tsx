@@ -19,6 +19,10 @@ export interface ObscrdProviderProps {
   devtools?: boolean
   /** Enable AI honeypot injection */
   honeypot?: boolean
+  /** Custom copyright notice for honeypots */
+  copyrightNotice?: string
+  /** Content ID prefix for forensic tracking */
+  contentIdPrefix?: string
 }
 
 export function ObscrdProvider({
@@ -28,10 +32,12 @@ export function ObscrdProvider({
   clipboard,
   devtools,
   honeypot,
+  copyrightNotice,
+  contentIdPrefix,
 }: ObscrdProviderProps) {
   const config = useMemo<ObscrdConfig>(
-    () => ({ seed, level, clipboard, devtools, honeypot }),
-    [seed, level, clipboard, devtools, honeypot],
+    () => ({ seed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix }),
+    [seed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix],
   )
 
   return <ObscrdContext.Provider value={{ config }}>{children}</ObscrdContext.Provider>

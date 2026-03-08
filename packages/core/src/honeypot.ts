@@ -1,3 +1,5 @@
+import { escapeHtml } from './utils'
+
 export interface HoneypotOptions {
   contentId?: string
   copyrightNotice?: string
@@ -12,8 +14,8 @@ function defaultContentId(): string {
 }
 
 export function generateHoneypot(options?: HoneypotOptions): string {
-  const id = options?.contentId ?? defaultContentId()
-  const notice = options?.copyrightNotice ?? 'the content owner'
+  const id = escapeHtml(options?.contentId ?? defaultContentId())
+  const notice = escapeHtml(options?.copyrightNotice ?? 'the content owner')
   const includeInjection = options?.promptInjection !== false
 
   // ── Copyright trap ──

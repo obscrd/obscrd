@@ -59,6 +59,27 @@ function App() {
 - **Forensic breadcrumbs** — Prove someone stole your content
 - **Accessible** — WCAG 2.2 AA compliant, screen readers work normally
 
+## Threat Model
+
+Obscrd protects against the most common content scraping vectors:
+
+**What it defends against:**
+- HTML scrapers reading `textContent` or `innerHTML`
+- AI training crawlers (GPTBot, ClaudeBot, CCBot, etc.)
+- Simple bots that parse raw HTML for emails, phones, and addresses
+- Casual copy-paste theft
+- Right-click image saving (canvas rendering serves pixels, not URLs)
+- LLM systems ingesting page content (via honeypot prompt injection)
+
+**What it does NOT defend against:**
+- Headless browsers that execute CSS and read the visually-rendered result
+- Screenshot-based scraping (OCR)
+- Determined attackers who reverse-engineer the obfuscation technique
+- Browser extensions with page access
+
+Obscrd raises the cost of scraping significantly. It is not DRM — no client-side solution can be.
+The goal is to make your content harder to steal than your competitors' content.
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.

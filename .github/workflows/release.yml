@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g. 0.1.0)'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.2.0'
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run test
+
+      # Bump versions in all packages
+      - name: Set versions
+        run: |
+          for pkg in packages/core packages/react packages/robots; do
+            cd $pkg
+            npm version ${{ inputs.version }} --no-git-tag-version
+            cd ../..
+          done
+
+      # Replace workspace:* with actual version before publish
+      - name: Resolve workspace versions
+        run: |
+          VERSION=${{ inputs.version }}
+          sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" packages/react/package.json
+
+      # Publish in dependency order
+      - name: Publish @obscrd/core
+        run: cd packages/core && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @obscrd/react
+        run: cd packages/react && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @obscrd/robots
+        run: cd packages/robots && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Tag and commit
+      - name: Commit and tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -A
+          git commit -m "chore: release v${{ inputs.version }}"
+          git tag "v${{ inputs.version }}"
+          git push && git push --tags

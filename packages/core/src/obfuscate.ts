@@ -43,7 +43,7 @@ function obfuscateWord(word: string, rng: () => number, level: 'medium' | 'maxim
 
   const spans: string[] = []
   for (const idx of shuffled) {
-    const escaped = escapeHtml(chars[idx])
+    const escaped = escapeHtml(chars[idx]).replace(/ /g, '&nbsp;')
     spans.push(`<span data-o="${idx}" style="order:${idx}">${escaped}</span>`)
 
     if (rng() > 0.4) {
@@ -79,7 +79,7 @@ export function obfuscateText(text: string, options: ObfuscateOptions): Obfuscat
 
     let inner: string
     if (level === 'light') {
-      inner = escapeHtml(word)
+      inner = escapeHtml(word).replace(/ /g, '&nbsp;')
     } else {
       inner = obfuscateWord(word, rng, level)
     }

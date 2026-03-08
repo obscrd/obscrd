@@ -1,0 +1,39 @@
+import { createElement } from 'react'
+import { ProtectedPhone } from '../phone'
+import { renderWithProvider } from './render'
+import { describe, expect, test } from 'bun:test'
+
+describe('ProtectedPhone', () => {
+  test('renders without crashing', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    expect(container.innerHTML).toBeTruthy()
+  })
+
+  test('output contains RTL CSS', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    const style = container.querySelector('style')
+    expect(style).not.toBeNull()
+    expect(style?.textContent).toContain('direction:rtl')
+  })
+
+  test('has sr-only span with phone text', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    const srOnly = container.querySelector('span[style*="clip"]')
+    expect(srOnly).not.toBeNull()
+    expect(srOnly?.textContent).toBe('+1-555-123-4567')
+  })
+
+  test('uses children as sr-only text when provided', () => {
+    const container = renderWithProvider(
+      createElement(ProtectedPhone, { phone: '+1-555-123-4567', children: 'Call us' }),
+    )
+    const srOnly = container.querySelector('span[style*="clip"]')
+    expect(srOnly?.textContent).toBe('Call us')
+  })
+
+  test('obfuscated span has aria-hidden', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
+    const hidden = container.querySelector('[aria-hidden="true"]')
+    expect(hidden).not.toBeNull()
+  })
+})

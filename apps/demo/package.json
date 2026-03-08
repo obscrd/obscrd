@@ -2,8 +2,23 @@
   "name": "demo",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "echo 'Demo app coming soon'",
-    "build": "echo 'Demo app coming soon'"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@obscrd/core": "workspace:*",
+    "@obscrd/react": "workspace:*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@obscrd/typescript-config": "workspace:*",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "vite": "^6.3.0"
   }
 }

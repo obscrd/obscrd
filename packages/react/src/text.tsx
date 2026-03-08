@@ -25,7 +25,7 @@ export function ProtectedText({ children, level, as: Tag = 'span', className }: 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: result.css }} />
-      <Tag className={className} aria-label={result.ariaText} dangerouslySetInnerHTML={{ __html: result.html }} />
+      <Tag className={className} dangerouslySetInnerHTML={{ __html: result.html }} />
     </>
   )
 }

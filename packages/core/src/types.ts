@@ -20,7 +20,7 @@ export interface ObfuscationResult {
   html: string
   /** CSS rules needed to reconstitute the text visually */
   css: string
-  /** Clean text for screen readers (aria-label) */
+  /** Clean text for screen readers (sr-only spans in contact components) */
   ariaText: string
   /** Unique content ID for forensic tracking */
   contentId: string

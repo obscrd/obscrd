@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obscrd Demo</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: #1a1a1a;
+        background: #fafafa;
+        padding: 2rem;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 0.25rem;
+      }
+
+      h1 + p {
+        color: #666;
+        margin-bottom: 2.5rem;
+      }
+
+      section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+      }
+
+      section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        color: #333;
+      }
+
+      section p,
+      section a {
+        margin-bottom: 0.5rem;
+      }
+
+      section > *:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        display: block;
+        font-size: 0.8rem;
+        color: #888;
+        margin-bottom: 0.25rem;
+        margin-top: 0.75rem;
+      }
+
+      .label:first-of-type {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -13,8 +13,8 @@ function decoySpan(content: string): string {
 
 // ── obfuscateEmail ──
 
-export function obfuscateEmail(email: string): { html: string; css: string } {
-  const derived = deriveSeed('contact', email)
+export function obfuscateEmail(email: string, seed = 'contact'): { html: string; css: string } {
+  const derived = deriveSeed(seed, email)
   const rng = mulberry32(seedToNumber(derived))
   const cls = `obscrd-email-${derived.slice(0, 8)}`
 
@@ -37,8 +37,8 @@ export function obfuscateEmail(email: string): { html: string; css: string } {
 
 // ── obfuscatePhone ──
 
-export function obfuscatePhone(phone: string): { html: string; css: string } {
-  const derived = deriveSeed('contact', phone)
+export function obfuscatePhone(phone: string, seed = 'contact'): { html: string; css: string } {
+  const derived = deriveSeed(seed, phone)
   const rng = mulberry32(seedToNumber(derived))
   const cls = `obscrd-phone-${derived.slice(0, 8)}`
 
@@ -61,8 +61,8 @@ export function obfuscatePhone(phone: string): { html: string; css: string } {
 
 // ── obfuscateAddress ──
 
-export function obfuscateAddress(address: string): { html: string; css: string } {
-  const derived = deriveSeed('contact', address)
+export function obfuscateAddress(address: string, seed = 'contact'): { html: string; css: string } {
+  const derived = deriveSeed(seed, address)
   const rng = mulberry32(seedToNumber(derived))
   const cls = `obscrd-addr-${derived.slice(0, 8)}`
 

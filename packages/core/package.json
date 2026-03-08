@@ -27,7 +27,8 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "bun test"
   },
   "devDependencies": {
     "@obscrd/typescript-config": "workspace:*",
