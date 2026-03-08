@@ -20,37 +20,28 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.2.0'
+      # Install with workspace deps intact
       - run: bun install --frozen-lockfile
       - run: bun run build
       - run: bun run test
 
-      # Replace workspace:* with actual version before bumping (npm version chokes on workspace:*)
-      - name: Resolve workspace versions
+      # NOW resolve versions and clean up for publish
+      - name: Prepare packages for publish
         run: |
           VERSION=${{ inputs.version }}
-          # Only resolve publishable workspace deps, skip typescript-config
-          sed -i "s/\"@obscrd\/core\": \"workspace:\*\"/\"@obscrd\/core\": \"^${VERSION}\"/g" packages/react/package.json
-          # Remove typescript-config from devDependencies before publish (it's internal-only)
+
+          # Set versions
           for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
             node -e "
               const fs = require('fs');
               const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
+              pkg.version = '${VERSION}';
               if (pkg.devDependencies?.['@obscrd/typescript-config']) {
                 delete pkg.devDependencies['@obscrd/typescript-config'];
               }
-              fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
-            "
-          done
-
-      # Bump versions in all packages (bypass npm version to avoid workspace: validation)
-      - name: Set versions
-        run: |
-          VERSION=${{ inputs.version }}
-          for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
-            node -e "
-              const fs = require('fs');
-              const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
-              pkg.version = '$VERSION';
+              if (pkg.dependencies?.['@obscrd/core'] === 'workspace:*') {
+                pkg.dependencies['@obscrd/core'] = '^${VERSION}';
+              }
               fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
             "
           done
@@ -71,7 +62,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish obscrd (CLI)
+      - name: Publish obscrd
         run: cd packages/cli && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
