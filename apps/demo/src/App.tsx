@@ -4,6 +4,7 @@ import {
   ProtectedBlock,
   ProtectedEmail,
   ProtectedImage,
+  ProtectedLink,
   ProtectedPhone,
   ProtectedText,
 } from '@obscrd/react'
@@ -36,6 +37,16 @@ export function App() {
           />
           <br />
           <ProtectedPhone phone="+1-555-867-5309" />
+        </section>
+
+        {/* ── Protected Links ── */}
+        <section>
+          <h2>Protected Links</h2>
+          <ProtectedLink href="https://wa.me/15551234567">Chat on WhatsApp</ProtectedLink>
+          <br />
+          <ProtectedLink href="https://obscrd.dev">
+            <ProtectedText>Visit our site</ProtectedText>
+          </ProtectedLink>
         </section>
 
         {/* ── Clipboard Protection ── */}

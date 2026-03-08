@@ -10,12 +10,14 @@ export interface ProtectedTextProps {
   as?: keyof HTMLElementTagNameMap
   /** Additional class name */
   className?: string
+  /** Disable obfuscation (useful for debugging) */
+  obfuscate?: boolean
 }
 
-export function ProtectedText({ children, level, as: Tag = 'span', className }: ProtectedTextProps) {
+export function ProtectedText({ children, level, as: Tag = 'span', className, obfuscate = true }: ProtectedTextProps) {
   const { config } = useObscrdContext()
 
-  if (process.env.NODE_ENV !== 'production' && typeof children !== 'string') {
+  if (process.env.NODE_ENV !== 'production' && obfuscate && typeof children !== 'string') {
     console.warn(
       '[obscrd] ProtectedText received non-string children. Only plain text is supported — React elements will be converted with String(), which may produce unexpected results.',
     )
@@ -28,6 +30,10 @@ export function ProtectedText({ children, level, as: Tag = 'span', className }: 
     () => obfuscateText(text, { seed: config.seed, level: effectiveLevel }),
     [text, config.seed, effectiveLevel],
   )
+
+  if (!obfuscate) {
+    return <Tag className={className}>{children}</Tag>
+  }
 
   return (
     <>

@@ -67,6 +67,7 @@ Obfuscates text content into scrambled HTML that renders correctly.
 | `level` | `'light' \| 'medium' \| 'maximum'` | provider level | Override protection level |
 | `as` | `keyof HTMLElementTagNameMap` | `'span'` | HTML tag to render |
 | `className` | `string` | — | CSS class |
+| `obfuscate` | `boolean` | `true` | Disable obfuscation (useful for debugging) |
 
 **Levels:** `light` (word shuffle), `medium` (+ char shuffle + decoys), `maximum` (+ zero-width chars + no select)
 
@@ -84,7 +85,7 @@ Renders a clickable `<a>` tag that reveals a `mailto:` href on interaction. The 
 | Prop | Type | Description |
 |------|------|-------------|
 | `email` | `string` | Email address to protect |
-| `children` | `string` | Optional display text (used as screen-reader-only label) |
+| `children` | `ReactNode` | Optional display text or React elements (icons, buttons) |
 | `className` | `string` | CSS class |
 | `subject` | `string` | Email subject line |
 | `body` | `string` | Email body text |
@@ -104,10 +105,37 @@ Renders a clickable `<a>` tag that reveals a `tel:` (or `sms:`) href on interact
 | Prop | Type | Description |
 |------|------|-------------|
 | `phone` | `string` | Phone number to protect |
-| `children` | `string` | Optional display text (used as screen-reader-only label) |
+| `children` | `ReactNode` | Optional display text or React elements (icons, buttons) |
 | `className` | `string` | CSS class |
 | `sms` | `boolean` | Use `sms:` instead of `tel:` |
 | `onClick` | `MouseEventHandler` | Additional click handler |
+
+### `<ProtectedLink>`
+
+Generic obfuscated link — hides the `href` until user interaction. Works with any URL scheme (`mailto:`, `tel:`, `https:`, etc.). Use it directly for arbitrary links, or let `ProtectedEmail` / `ProtectedPhone` handle contact-specific obfuscation.
+
+```tsx
+<ProtectedLink href="https://wa.me/15551234567">Chat on WhatsApp</ProtectedLink>
+
+<ProtectedLink href="https://secret.example.com/invite">
+  <ProtectedText>Secret invite link</ProtectedText>
+</ProtectedLink>
+
+<ProtectedLink href="https://example.com" obfuscate={false}>
+  Debugging — real href visible immediately
+</ProtectedLink>
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `href` | `string` | **required** | URL to protect |
+| `children` | `ReactNode` | **required** | Display content |
+| `className` | `string` | — | CSS class |
+| `style` | `CSSProperties` | — | Inline styles |
+| `obfuscate` | `boolean` | `true` | Disable obfuscation for debugging |
+| `onClick` | `MouseEventHandler` | — | Click handler |
+| `target` | `string` | — | Link target |
+| `rel` | `string` | `'noopener noreferrer'` | Rel attribute |
 
 ### `<ProtectedBlock>`
 

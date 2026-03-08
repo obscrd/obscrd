@@ -1,5 +1,6 @@
 import { obfuscateEmail } from '@obscrd/core'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { ProtectedLink } from './link'
 import { useObscrdContext } from './provider'
 import { srOnly } from './styles'
 
@@ -17,8 +18,8 @@ function buildMailto(email: string, opts: { subject?: string; body?: string; cc?
 
 export interface ProtectedEmailProps {
   email: string
-  /** Optional display text (defaults to the email) */
-  children?: string
+  /** Display content — string for obfuscated text, or React elements (icons, buttons, etc.) */
+  children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
   /** Email subject line */
@@ -46,27 +47,22 @@ export function ProtectedEmail({
 }: ProtectedEmailProps) {
   const { config } = useObscrdContext()
   const result = useMemo(() => obfuscateEmail(email, config.seed), [email, config.seed])
-  const [active, setActive] = useState(false)
-
-  const href = active ? buildMailto(email, { subject, body, cc, bcc }) : '#'
+  const href = buildMailto(email, { subject, body, cc, bcc })
+  const isTextChild = typeof children === 'string' || children === undefined
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: result.css }} />
-      <a
-        href={href}
-        className={className}
-        style={style ? { cursor: 'pointer', ...style } : { cursor: 'pointer' }}
-        rel="noopener noreferrer"
-        onClick={onClick}
-        onMouseEnter={() => setActive(true)}
-        onMouseLeave={() => setActive(false)}
-        onFocus={() => setActive(true)}
-        onBlur={() => setActive(false)}
-      >
-        <span style={srOnly}>{children ?? email}</span>
-        <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: result.html }} />
-      </a>
+      {isTextChild && <style dangerouslySetInnerHTML={{ __html: result.css }} />}
+      <ProtectedLink href={href} className={className} style={style} onClick={onClick}>
+        {isTextChild ? (
+          <>
+            <span style={srOnly}>{children ?? email}</span>
+            <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: result.html }} />
+          </>
+        ) : (
+          children
+        )}
+      </ProtectedLink>
     </>
   )
 }
