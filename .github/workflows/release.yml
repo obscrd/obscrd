@@ -28,8 +28,18 @@ jobs:
       - name: Resolve workspace versions
         run: |
           VERSION=${{ inputs.version }}
-          for f in packages/*/package.json; do
-            sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" "$f"
+          # Only resolve publishable workspace deps, skip typescript-config
+          sed -i "s/\"@obscrd\/core\": \"workspace:\*\"/\"@obscrd\/core\": \"^${VERSION}\"/g" packages/react/package.json
+          # Remove typescript-config from devDependencies before publish (it's internal-only)
+          for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
+              if (pkg.devDependencies?.['@obscrd/typescript-config']) {
+                delete pkg.devDependencies['@obscrd/typescript-config'];
+              }
+              fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
+            "
           done
 
       # Bump versions in all packages (bypass npm version to avoid workspace: validation)
