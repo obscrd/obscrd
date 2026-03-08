@@ -1,3 +1,4 @@
+import type { ObscrdConfig } from '@obscrd/core'
 import { createElement } from 'react'
 import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
@@ -33,11 +34,11 @@ describe('useObscrd', () => {
     }
 
     expect(error).not.toBeNull()
-    expect(error?.message).toContain('useObscrdContext must be used within')
+    expect((error as Error | null)?.message).toContain('useObscrdContext must be used within')
   })
 
   test('returns config inside provider', () => {
-    let config: Record<string, unknown> | null = null
+    let config: ObscrdConfig | null = null
 
     function TestComponent() {
       const ctx = useObscrd()
@@ -52,14 +53,16 @@ describe('useObscrd', () => {
     })
 
     expect(config).not.toBeNull()
-    expect(config.seed).toBe('my-seed')
-    expect(config.level).toBe('medium')
+    // biome-ignore lint/style/noNonNullAssertion: checked above
+    expect(config!.seed).toBe('my-seed')
+    // biome-ignore lint/style/noNonNullAssertion: checked above
+    expect(config!.level).toBe('medium')
   })
 })
 
 describe('useProtectedCopy', () => {
   test('returns an object with onCopy', () => {
-    let result: Record<string, unknown> | null = null
+    let result: ReturnType<typeof useProtectedCopy> | null = null
 
     function TestComponent() {
       result = useProtectedCopy()
@@ -73,6 +76,7 @@ describe('useProtectedCopy', () => {
     })
 
     expect(result).not.toBeNull()
-    expect(typeof result.onCopy).toBe('function')
+    // biome-ignore lint/style/noNonNullAssertion: checked above
+    expect(typeof result!.onCopy).toBe('function')
   })
 })

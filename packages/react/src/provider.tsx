@@ -8,7 +8,7 @@ export interface ObscrdContextValue {
 const ObscrdContext = createContext<ObscrdContextValue | null>(null)
 
 export interface ObscrdProviderProps {
-  children: ReactNode
+  children?: ReactNode
   /** Project seed for deterministic obfuscation (falls back to a random seed if omitted) */
   seed?: string
   /** Protection level */

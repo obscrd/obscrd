@@ -3,7 +3,7 @@ import { type ReactNode, useMemo } from 'react'
 import { useObscrdContext } from './provider'
 
 export interface ProtectedTextProps {
-  children: ReactNode
+  children?: ReactNode
   /** Override the protection level for this element */
   level?: 'light' | 'medium' | 'maximum'
   /** HTML tag to render */

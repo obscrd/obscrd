@@ -3,7 +3,7 @@ import { type ReactNode, useEffect } from 'react'
 import { useObscrdContext } from './provider'
 
 export interface ProtectedBlockProps {
-  children: ReactNode
+  children?: ReactNode
   className?: string
 }
 
