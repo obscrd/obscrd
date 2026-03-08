@@ -28,7 +28,9 @@ jobs:
       - name: Resolve workspace versions
         run: |
           VERSION=${{ inputs.version }}
-          sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" packages/react/package.json
+          for f in packages/*/package.json; do
+            sed -i "s/\"workspace:\*\"/\"^${VERSION}\"/g" "$f"
+          done
 
       # Bump versions in all packages
       - name: Set versions
