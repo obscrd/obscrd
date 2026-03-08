@@ -1,6 +1,6 @@
 {
   "name": "@obscrd/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Content protection engine — obfuscate text, trap scrapers, defend against AI bots",
   "type": "module",
   "bin": {
@@ -35,7 +35,7 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@obscrd/typescript-config": "workspace:*",
+    "@obscrd/typescript-config": "^0.1.0",
     "@types/node": "^25.3.5",
     "tsup": "^8.4.0"
   },

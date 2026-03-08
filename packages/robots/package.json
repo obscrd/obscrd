@@ -1,6 +1,6 @@
 {
   "name": "@obscrd/robots",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "AI crawler blocking — generate robots.txt, meta tags, and HTTP headers for 30+ AI bots",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -31,7 +31,7 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@obscrd/typescript-config": "workspace:*",
+    "@obscrd/typescript-config": "^0.1.0",
     "@types/bun": "^1.3.10",
     "tsup": "^8.4.0"
   },
