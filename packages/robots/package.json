@@ -40,8 +40,12 @@
     "ai-crawler",
     "gptbot",
     "claudebot",
+    "bot-blocking",
+    "anti-scraping",
     "web-scraping",
-    "bot-blocking"
+    "crawler-blocking",
+    "ai-bot-protection",
+    "content-protection"
   ],
   "license": "MIT",
   "repository": {
