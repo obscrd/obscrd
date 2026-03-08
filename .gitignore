@@ -41,5 +41,8 @@ coverage
 # Certificates/Keys
 *.pem
 
+# Vite
+.vite
+
 # Turbo
 .turbo
