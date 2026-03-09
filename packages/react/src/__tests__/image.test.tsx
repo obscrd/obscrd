@@ -98,9 +98,9 @@ describe('ProtectedImage', () => {
     HTMLCanvasElement.prototype.getContext = () => ({ drawImage() {}, clearRect() {} }) as any
 
     const OrigImage = globalThis.Image
-    let capturedCrossOrigin: string | null = null
+    let capturedCrossOrigin = ''
     globalThis.Image = class MockImage {
-      crossOrigin: string | null = null
+      crossOrigin = ''
       onload: (() => void) | null = null
       onerror: (() => void) | null = null
       set src(_: string) {
