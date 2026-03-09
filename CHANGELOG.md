@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+### @obscrd/react
+- Added `crossOrigin` prop to `ProtectedImage` — opt-in CORS support for CDN/cross-origin images, with a console warning when the canvas gets tainted without it
+- Added `objectFit` prop to `ProtectedImage` (`'fill' | 'cover' | 'contain' | 'none'`) — implements CSS `object-fit` equivalent on canvas via `drawImage` math
+- CSS-driven sizing: `ProtectedImage` no longer forces `width: 200px, height: 150px` when no explicit dimensions are passed — Tailwind/CSS classes now control sizing, with a `ResizeObserver` redrawing the canvas buffer on resize
+
 ## 0.2.0
 
 ### @obscrd/core

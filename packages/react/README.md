@@ -185,17 +185,43 @@ Renders an image to a `<canvas>` element — no `<img>` tag in the DOM, so scrap
 
 ```tsx
 <ProtectedImage src="/photo.jpg" alt="A photo" width={800} height={600} />
+
+{/* Cross-origin images (CDNs, picsum.photos, etc.) */}
+<ProtectedImage
+  src="https://cdn.example.com/photo.jpg"
+  alt="CDN photo"
+  crossOrigin="anonymous"
+  objectFit="cover"
+  width={400}
+  height={300}
+/>
+
+{/* CSS-driven sizing — let Tailwind control dimensions */}
+<ProtectedImage
+  src="/hero.jpg"
+  alt="Hero"
+  className="w-full h-64"
+  objectFit="cover"
+/>
 ```
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `src` | `string` | Image source URL |
-| `alt` | `string` | Alt text |
-| `width` | `number` | Image width |
-| `height` | `number` | Image height |
-| `className` | `string` | CSS class |
-| `style` | `CSSProperties` | Inline styles (borderRadius is inherited by the loading skeleton) |
-| `ref` | `Ref<HTMLCanvasElement>` | Forwarded ref |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string` | **required** | Image source URL |
+| `alt` | `string` | **required** | Alt text |
+| `width` | `number` | — | Image width (omit to let CSS drive sizing) |
+| `height` | `number` | — | Image height (omit to let CSS drive sizing) |
+| `crossOrigin` | `'' \| 'anonymous' \| 'use-credentials'` | — | CORS attribute for cross-origin images |
+| `objectFit` | `'fill' \| 'cover' \| 'contain' \| 'none'` | `'fill'` | How the image fills the canvas (like CSS `object-fit`) |
+| `className` | `string` | — | CSS class |
+| `style` | `CSSProperties` | — | Inline styles (borderRadius is inherited by the loading skeleton) |
+| `ref` | `Ref<HTMLCanvasElement>` | — | Forwarded ref |
+
+**`crossOrigin`:** Required for images served from CDNs or other domains. Without it, the canvas becomes tainted and a console warning fires. Set to `"anonymous"` for most CDN use cases.
+
+**`objectFit`:** Since CSS `object-fit` doesn't work on `<canvas>`, this prop implements equivalent crop/scale math in `drawImage`. Use `"cover"` for hero images, `"contain"` to letterbox, `"none"` for natural size centered.
+
+**CSS-driven sizing:** When `width`/`height` props are omitted, the wrapper has no inline dimensions — Tailwind classes like `w-full h-64` work as expected. A `ResizeObserver` redraws the canvas buffer when the wrapper resizes.
 
 ### `<Honeypot>`
 
