@@ -53,7 +53,7 @@ function App() {
 
 - **Text obfuscation** — Scrambles HTML while CSS makes it look normal
 - **AI honeypots** — Hidden text that talks directly to LLM scrapers
-- **Clipboard protection** — Copy produces encrypted garbage
+- **Clipboard protection** — Copy produces scrambled output
 - **Contact info protection** — Emails, phones, addresses hidden from bots
 - **Image protection** — Canvas-based rendering, no direct URLs
 - **robots.txt automation** — Block 30+ AI crawlers with one function
@@ -80,6 +80,9 @@ Obscrd protects against the most common content scraping vectors:
 
 Obscrd raises the cost of scraping significantly. It is not DRM — no client-side solution can be.
 The goal is to make your content harder to steal than your competitors' content.
+
+For a detailed security analysis including cryptographic properties, bypass vectors,
+and recommendations for higher security, see [SECURITY.md](./SECURITY.md).
 
 ## Contributing
 
