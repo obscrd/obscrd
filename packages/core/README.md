@@ -18,7 +18,7 @@ const result = obfuscateText('Sensitive content', { seed, level: 'medium' })
 
 // result.html  → scrambled HTML that renders correctly
 // result.css   → CSS rules to reconstitute the text
-// result.ariaText → clean text for screen readers
+// result.ariaText → clean text for screen readers (empty at 'maximum' level)
 ```
 
 ## CLI
@@ -53,10 +53,10 @@ const seed = createSeed() // → '3a7f2b...' (32-char hex)
 
 ### `deriveSeed(masterSeed, contentId)`
 
-Derive a sub-seed for a specific content block.
+Derive a sub-seed for a specific content block. Returns a 16-character hex string (64-bit, collision-safe up to ~4 billion blocks).
 
 ```ts
-const sub = deriveSeed(seed, 'article-title') // → '8f3a1c02'
+const sub = deriveSeed(seed, 'article-title') // → '8f3a1c02d7e9b4f6'
 ```
 
 ### `obfuscateText(text, options)`
@@ -74,6 +74,8 @@ const result = obfuscateText('Hello world', { seed, level: 'medium' })
 - `maximum` — all of medium + zero-width characters + `user-select: none`
 
 Returns `ObfuscationResult`: `{ html, css, ariaText, contentId }`
+
+> **Note:** At `maximum` level, `ariaText` returns an empty string to prevent plaintext leakage.
 
 ### `obfuscateEmail(email)`
 
@@ -111,14 +113,18 @@ const html = generateHoneypot({
 })
 ```
 
-### `createClipboardInterceptor()`
+### `createClipboardInterceptor(target?)`
 
-Intercepts copy events and scrambles the clipboard content.
+Intercepts copy events and scrambles the clipboard content. Optionally pass a DOM element to scope interception to that subtree — without a target, it attaches to `document`.
 
 ```ts
-const interceptor = createClipboardInterceptor()
-interceptor.attach() // start intercepting
-interceptor.detach() // stop
+const interceptor = createClipboardInterceptor()       // intercepts all copy events
+interceptor.attach()
+interceptor.detach()
+
+const scoped = createClipboardInterceptor(myElement)   // only intercepts within myElement
+scoped.attach()
+scoped.detach()
 ```
 
 ### `detectDevTools(onDetect)`
