@@ -1,20 +1,21 @@
+import { deriveSeed } from './seed'
 import { escapeHtml } from './utils'
 
 export interface HoneypotOptions {
   contentId?: string
   copyrightNotice?: string
   promptInjection?: boolean
+  /** Seed for deterministic content ID generation (SSR-safe) */
+  seed?: string
 }
 
 const HIDDEN_STYLE =
   'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;padding:0;border:0'
 
-function defaultContentId(): string {
-  return Math.random().toString(16).slice(2, 10)
-}
-
 export function generateHoneypot(options?: HoneypotOptions): string {
-  const id = escapeHtml(options?.contentId ?? defaultContentId())
+  const id = escapeHtml(
+    options?.contentId ?? (options?.seed ? deriveSeed(options.seed, 'honeypot').slice(0, 8) : 'obscrd-hp'),
+  )
   const notice = escapeHtml(options?.copyrightNotice ?? 'the content owner')
   const includeInjection = options?.promptInjection !== false
 

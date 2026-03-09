@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.2
+
+### @obscrd/core
+- Fixed SSR hydration mismatch: `generateHoneypot()` now accepts an optional `seed` for deterministic content ID generation instead of using `Math.random()`
+- Without a seed or explicit `contentId`, honeypots use a static `'obscrd-hp'` fallback instead of a random ID
+
+### CLI
+- Fixed `obscrd init` writing to `.env` even when `.env.local` exists — now prefers `.env.local` (Next.js, Vite) and checks both files for existing `OBSCRD_SEED`
+
+### @obscrd/react
+- Fixed SSR hydration mismatch in `Breadcrumb` — derives deterministic ID from provider seed via `deriveSeed` instead of `Math.random()`
+- Fixed SSR hydration mismatch in `ObscrdProvider` — when no seed is provided, defers protection rendering until client mount to avoid server/client divergence
+- `Honeypot` component now passes provider seed through to `generateHoneypot` for deterministic output
+- `ObscrdProvider` auto-injected honeypot now uses the resolved seed for deterministic IDs
+
 ## 0.2.1
 
 ### @obscrd/react

@@ -1,5 +1,5 @@
 import { createSeed, detectDevTools, generateHoneypot, type ObscrdConfig } from '@obscrd/core'
-import { createContext, type ReactNode, useContext, useEffect, useMemo, useRef } from 'react'
+import { createContext, type ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 export interface ObscrdContextValue {
   config: ObscrdConfig
@@ -38,6 +38,7 @@ export function ObscrdProvider({
   contentIdPrefix,
   onDevToolsDetected,
 }: ObscrdProviderProps) {
+  const [mounted, setMounted] = useState(false)
   const fallbackSeed = useRef(createSeed())
   const resolvedSeed = seed ?? fallbackSeed.current
 
@@ -46,6 +47,7 @@ export function ObscrdProvider({
       console.warn(
         '[obscrd] No seed provided — using a random seed. For deterministic obfuscation and SSR support, run: npx @obscrd/core init',
       )
+      setMounted(true)
     }
   }, [seed])
 
@@ -65,9 +67,14 @@ export function ObscrdProvider({
 
   // ── Auto-injected honeypot ──
   const honeypotHtml = useMemo(
-    () => (honeypot ? generateHoneypot({ copyrightNotice }) : ''),
-    [honeypot, copyrightNotice],
+    () => (honeypot ? generateHoneypot({ copyrightNotice, seed: resolvedSeed }) : ''),
+    [honeypot, copyrightNotice, resolvedSeed],
   )
+
+  // If no seed provided, wait for mount to avoid SSR hydration mismatch
+  if (!seed && !mounted) {
+    return <>{children}</>
+  }
 
   return (
     <ObscrdContext.Provider value={{ config }}>

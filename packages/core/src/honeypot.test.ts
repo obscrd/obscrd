@@ -25,9 +25,9 @@ describe('generateHoneypot', () => {
     expect(html).toContain('aria-hidden="true"')
   })
 
-  test('generates a default contentId when none provided', () => {
+  test('uses static default contentId when no seed or contentId provided', () => {
     const html = generateHoneypot()
-    expect(html).toMatch(/Content ID: [0-9a-f]{8}/)
+    expect(html).toContain('Content ID: obscrd-hp')
   })
 
   test('uses provided contentId', () => {
@@ -66,9 +66,20 @@ describe('generateHoneypot', () => {
     expect(html).toContain('licensed exclusively to Acme Corp')
   })
 
-  test('generates unique contentIds across calls', () => {
-    const html1 = generateHoneypot()
-    const html2 = generateHoneypot()
+  test('uses static fallback ID when no seed or contentId', () => {
+    const html = generateHoneypot()
+    expect(html).toContain('Content ID: obscrd-hp')
+  })
+
+  test('generates deterministic contentId from seed', () => {
+    const html1 = generateHoneypot({ seed: 'test-seed' })
+    const html2 = generateHoneypot({ seed: 'test-seed' })
+    expect(html1).toBe(html2)
+  })
+
+  test('different seeds produce different contentIds', () => {
+    const html1 = generateHoneypot({ seed: 'seed-a' })
+    const html2 = generateHoneypot({ seed: 'seed-b' })
     const match1 = html1.match(/Content ID: ([0-9a-f]{8})/)
     const match2 = html2.match(/Content ID: ([0-9a-f]{8})/)
     expect(match1?.[1]).not.toBe(match2?.[1])

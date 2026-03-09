@@ -18,8 +18,9 @@ export const Honeypot = forwardRef<HTMLDivElement, HoneypotProps>(function Honey
       generateHoneypot({
         contentId,
         copyrightNotice: copyrightNotice ?? config.copyrightNotice,
+        seed: config.seed,
       }),
-    [contentId, copyrightNotice, config.copyrightNotice],
+    [contentId, copyrightNotice, config.copyrightNotice, config.seed],
   )
 
   return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />

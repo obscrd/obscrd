@@ -1,15 +1,24 @@
+import { deriveSeed } from '@obscrd/core'
 import { forwardRef, useMemo } from 'react'
+import { useObscrdContext } from './provider'
 
 export interface BreadcrumbProps {
   id?: string
 }
 
-function generateId(): string {
-  return Math.random().toString(16).slice(2, 10)
-}
-
 export const Breadcrumb = forwardRef<HTMLSpanElement, BreadcrumbProps>(function Breadcrumb({ id }, ref) {
-  const contentId = useMemo(() => id ?? generateId(), [id])
+  const { config } = useObscrdContext()
+
+  const contentId = useMemo(() => {
+    if (id) return id
+    return deriveSeed(config.seed, 'breadcrumb').slice(0, 8)
+  }, [id, config.seed])
+
+  if (process.env.NODE_ENV !== 'production' && !id) {
+    console.warn(
+      '[obscrd] Breadcrumb without an explicit `id` — all breadcrumbs with the same seed will share the same ID. Pass a unique `id` for forensic tracking.',
+    )
+  }
 
   return (
     <span
