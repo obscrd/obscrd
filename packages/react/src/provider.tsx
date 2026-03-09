@@ -71,13 +71,15 @@ export function ObscrdProvider({
     [honeypot, copyrightNotice, resolvedSeed],
   )
 
+  const ctxValue = useMemo(() => ({ config }), [config])
+
   // If no seed provided, wait for mount to avoid SSR hydration mismatch
   if (!seed && !mounted) {
     return <>{children}</>
   }
 
   return (
-    <ObscrdContext.Provider value={{ config }}>
+    <ObscrdContext.Provider value={ctxValue}>
       {children}
       {honeypot && <div dangerouslySetInnerHTML={{ __html: honeypotHtml }} />}
     </ObscrdContext.Provider>

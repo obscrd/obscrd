@@ -28,7 +28,8 @@ export function generateRobotsTxt(options: RobotsOptions = {}): string {
       : []
 
   if (allow?.length) {
-    crawlers = crawlers.filter((c) => !allow.some((a) => a === c.name || a === c.userAgent))
+    const allowSet = new Set(allow)
+    crawlers = crawlers.filter((c) => !allowSet.has(c.name) && !allowSet.has(c.userAgent))
   }
 
   // ── Build output ──

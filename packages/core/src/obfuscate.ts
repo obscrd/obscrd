@@ -22,9 +22,10 @@ function splitChars(word: string): string[] {
 
 // ── Decoys ──
 
+const DECOY_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
 function generateDecoyChar(rng: () => number): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  return chars[Math.floor(rng() * chars.length)]
+  return DECOY_CHARS[Math.floor(rng() * DECOY_CHARS.length)]
 }
 
 const HIDDEN_STYLE = 'position:absolute;clip:rect(0,0,0,0);font-size:0;width:0;height:0;overflow:hidden'

@@ -1,6 +1,11 @@
 import { deriveSeed } from './seed'
 import { escapeHtml, fisherYatesShuffle, mulberry32, seedToNumber } from './utils'
 
+// ── Constants ──
+
+const EMAIL_DECOY_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789@._-'
+const PHONE_DECOY_CHARS = '0123456789+-() '
+
 // ── Helpers ──
 
 function generateDecoyChar(rng: () => number, chars: string): string {
@@ -24,7 +29,7 @@ export function obfuscateEmail(email: string, seed = 'contact'): { html: string;
   for (const ch of reversed) {
     spans.push(escapeHtml(ch))
     if (rng() > 0.4) {
-      const junk = generateDecoyChar(rng, 'abcdefghijklmnopqrstuvwxyz0123456789@._-')
+      const junk = generateDecoyChar(rng, EMAIL_DECOY_CHARS)
       spans.push(decoySpan(junk))
     }
   }
@@ -48,7 +53,7 @@ export function obfuscatePhone(phone: string, seed = 'contact'): { html: string;
   for (const ch of reversed) {
     spans.push(escapeHtml(ch))
     if (rng() > 0.4) {
-      const junk = generateDecoyChar(rng, '0123456789+-() ')
+      const junk = generateDecoyChar(rng, PHONE_DECOY_CHARS)
       spans.push(decoySpan(junk))
     }
   }

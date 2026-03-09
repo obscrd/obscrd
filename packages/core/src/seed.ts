@@ -8,11 +8,7 @@ export function createSeed(): string {
     return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
   }
 
-  let hex = ''
-  for (let i = 0; i < 32; i++) {
-    hex += Math.floor(Math.random() * 16).toString(16)
-  }
-  return hex
+  return Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('')
 }
 
 // ── Hashing ──

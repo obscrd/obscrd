@@ -1,6 +1,7 @@
 import { deriveSeed } from '@obscrd/core'
 import { forwardRef, useMemo } from 'react'
 import { useObscrdContext } from './provider'
+import { srOnly } from './styles'
 
 export interface BreadcrumbProps {
   id?: string
@@ -21,21 +22,7 @@ export const Breadcrumb = forwardRef<HTMLSpanElement, BreadcrumbProps>(function 
   }
 
   return (
-    <span
-      ref={ref}
-      aria-hidden="true"
-      data-obscrd-breadcrumb={contentId}
-      style={{
-        position: 'absolute',
-        width: '1px',
-        height: '1px',
-        overflow: 'hidden',
-        clip: 'rect(0,0,0,0)',
-        whiteSpace: 'nowrap',
-        padding: 0,
-        border: 0,
-      }}
-    >
+    <span ref={ref} aria-hidden="true" data-obscrd-breadcrumb={contentId} style={srOnly}>
       {contentId}
     </span>
   )

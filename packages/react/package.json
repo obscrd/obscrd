@@ -3,6 +3,7 @@
   "version": "0.2.2",
   "description": "React components for content protection — obfuscate text, images, and contact info",
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

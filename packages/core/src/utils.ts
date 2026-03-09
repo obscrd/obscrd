@@ -27,11 +27,14 @@ export function fisherYatesShuffle<T>(arr: T[], rng: () => number): T[] {
 
 // ── HTML ──
 
+const HTML_ESCAPE_MAP: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+}
+
 export function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
+  return str.replace(/[&<>"']/g, (ch) => HTML_ESCAPE_MAP[ch])
 }

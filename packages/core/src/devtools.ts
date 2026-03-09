@@ -4,9 +4,11 @@
  * May be blocked by CSP if `new Function` is restricted.
  */
 export function detectDevTools(onDetect: () => void): { start: () => void; stop: () => void } {
-  let intervalId: ReturnType<typeof setInterval> | null = null
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
   const THRESHOLD_MS = 100
-  const POLL_MS = 1000
+  const INITIAL_MS = 1000
+  const MAX_MS = 5000
+  let currentInterval = INITIAL_MS
 
   function check() {
     const before = performance.now()
@@ -19,21 +21,26 @@ export function detectDevTools(onDetect: () => void): { start: () => void; stop:
     const elapsed = performance.now() - before
     if (elapsed > THRESHOLD_MS) {
       onDetect()
+      currentInterval = INITIAL_MS
+    } else {
+      currentInterval = Math.min(currentInterval * 2, MAX_MS)
     }
+    timeoutId = setTimeout(check, currentInterval)
   }
 
   function start() {
     if (typeof window === 'undefined') return
-    if (intervalId) return
+    if (timeoutId) return
 
-    intervalId = setInterval(check, POLL_MS)
+    currentInterval = INITIAL_MS
+    timeoutId = setTimeout(check, currentInterval)
   }
 
   function stop() {
-    if (intervalId === null) return
+    if (timeoutId === null) return
 
-    clearInterval(intervalId)
-    intervalId = null
+    clearTimeout(timeoutId)
+    timeoutId = null
   }
 
   return { start, stop }
