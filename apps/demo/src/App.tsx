@@ -11,7 +11,7 @@ import {
 
 export function App() {
   return (
-    <ObscrdProvider seed="demo-seed-2024" devtools honeypot copyrightNotice="Obscrd Demo">
+    <ObscrdProvider seed="demo-seed-2024" honeypot copyrightNotice="Obscrd Demo">
       <main>
         <h1>Obscrd Demo</h1>
         <p>View source or inspect the DOM to see obfuscation in action.</p>
@@ -67,7 +67,13 @@ export function App() {
         {/* ── Image Protection ── */}
         <section>
           <h2>Image Protection</h2>
-          <ProtectedImage src="https://picsum.photos/400/300" alt="Demo protected image" width={400} height={300} />
+          <ProtectedImage
+            style={{ marginBottom: '8px' }}
+            src="https://picsum.photos/400/300"
+            alt="Demo protected image"
+            width={400}
+            height={300}
+          />
           <ProtectedImage
             src="https://broken.invalid/nope.jpg"
             alt="This image intentionally fails"
