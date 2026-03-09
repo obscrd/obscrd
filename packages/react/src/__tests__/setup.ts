@@ -23,3 +23,12 @@ Object.defineProperty(globalThis, 'HTMLStyleElement', { value: dom.window.HTMLSt
 Object.defineProperty(globalThis, 'HTMLParagraphElement', { value: dom.window.HTMLParagraphElement, writable: true })
 Object.defineProperty(globalThis, 'HTMLCanvasElement', { value: dom.window.HTMLCanvasElement, writable: true })
 Object.defineProperty(globalThis, 'HTMLAnchorElement', { value: dom.window.HTMLAnchorElement, writable: true })
+
+// Minimal ResizeObserver stub for tests
+if (!globalThis.ResizeObserver) {
+  globalThis.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as any
+}

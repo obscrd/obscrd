@@ -71,6 +71,8 @@ export function App() {
             style={{ marginBottom: '8px' }}
             src="https://picsum.photos/400/300"
             alt="Demo protected image"
+            crossOrigin="anonymous"
+            objectFit="cover"
             width={400}
             height={300}
           />

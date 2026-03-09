@@ -92,4 +92,67 @@ describe('ProtectedImage', () => {
     globalThis.Image = OrigImage
     HTMLCanvasElement.prototype.getContext = origGetContext
   })
+
+  test('crossOrigin prop is set on the internal Image before src', () => {
+    const origGetContext = HTMLCanvasElement.prototype.getContext
+    HTMLCanvasElement.prototype.getContext = () => ({ drawImage() {}, clearRect() {} }) as any
+
+    const OrigImage = globalThis.Image
+    let capturedCrossOrigin: string | null = null
+    globalThis.Image = class MockImage {
+      crossOrigin: string | null = null
+      onload: (() => void) | null = null
+      onerror: (() => void) | null = null
+      set src(_: string) {
+        capturedCrossOrigin = this.crossOrigin
+      }
+    } as any
+
+    render(
+      createElement(ProtectedImage, {
+        src: 'https://cdn.example.com/photo.jpg',
+        alt: 'CDN photo',
+        crossOrigin: 'anonymous',
+        width: 200,
+        height: 100,
+      }),
+    )
+
+    expect(capturedCrossOrigin).toBe('anonymous')
+
+    globalThis.Image = OrigImage
+    HTMLCanvasElement.prototype.getContext = origGetContext
+  })
+
+  test('omits inline width/height when props not provided', () => {
+    const container = render(createElement(ProtectedImage, { src: '/photo.jpg', alt: 'A photo' }))
+    const wrapper = container.querySelector('[style]') as HTMLElement
+    expect(wrapper).not.toBeNull()
+    expect(wrapper?.style.width).toBe('')
+    expect(wrapper?.style.height).toBe('')
+  })
+
+  test('sets inline width/height when props provided', () => {
+    const container = render(
+      createElement(ProtectedImage, { src: '/photo.jpg', alt: 'A photo', width: 300, height: 200 }),
+    )
+    const wrapper = container.querySelector('[style]') as HTMLElement
+    expect(wrapper).not.toBeNull()
+    expect(wrapper?.style.width).toBe('300px')
+    expect(wrapper?.style.height).toBe('200px')
+  })
+
+  test('objectFit prop renders without error', () => {
+    const container = render(
+      createElement(ProtectedImage, {
+        src: '/photo.jpg',
+        alt: 'A photo',
+        objectFit: 'cover',
+        width: 200,
+        height: 100,
+      }),
+    )
+    const canvas = container.querySelector('canvas')
+    expect(canvas).not.toBeNull()
+  })
 })
