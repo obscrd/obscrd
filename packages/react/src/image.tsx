@@ -75,17 +75,18 @@ export const ProtectedImage = forwardRef<HTMLCanvasElement, ProtectedImageProps>
   }
 
   return (
-    <>
+    <div
+      className={className}
+      style={{ ...style, position: 'relative', width: width ?? 200, height: height ?? 150, overflow: 'hidden' }}
+    >
       {!loaded && <style dangerouslySetInnerHTML={{ __html: pulseCSS }} />}
       {!loaded && (
         <div
-          className={className}
           style={{
-            ...style,
-            width: width ?? 200,
-            height: height ?? 150,
+            position: 'absolute',
+            inset: 0,
             background: '#18181b',
-            borderRadius: '4px',
+            borderRadius: style?.borderRadius,
             animation: 'obscrd-pulse 1.5s ease-in-out infinite',
           }}
           aria-busy="true"
@@ -96,12 +97,11 @@ export const ProtectedImage = forwardRef<HTMLCanvasElement, ProtectedImageProps>
         ref={setRefs}
         role="img"
         aria-label={alt}
-        className={className}
-        style={loaded ? style : { position: 'absolute', visibility: 'hidden' }}
+        style={{ display: 'block', width: '100%', height: '100%' }}
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
       />
-    </>
+    </div>
   )
 })
 
