@@ -15,6 +15,19 @@
 - `Honeypot` component now passes provider seed through to `generateHoneypot` for deterministic output
 - `ObscrdProvider` auto-injected honeypot now uses the resolved seed for deterministic IDs
 
+### Performance
+- `escapeHtml` rewritten as single-pass regex (was 5 sequential `.replace()` calls)
+- `ObscrdProvider` context value memoized — prevents cascading re-renders across all consumer components
+- DevTools detection uses exponential backoff (1s → 5s) instead of fixed 1s polling
+- `Breadcrumb` reuses shared `srOnly` style constant instead of creating inline object per render
+- `createSeed` fallback uses array join instead of loop string concatenation
+- Decoy character sets extracted to module-level constants (`@obscrd/core`)
+- `generateRobotsTxt` allow-list uses `Set` lookup instead of O(n×m) array iteration
+
+### Build
+- Enabled minification across all packages (core −42%, react −42%, robots −25% bundle size)
+- Added `"sideEffects": false` to all packages for better consumer tree-shaking
+
 ## 0.2.1
 
 ### @obscrd/react
