@@ -92,5 +92,6 @@ export function obfuscateText(text: string, options: ObfuscateOptions): Obfuscat
   const html = `<span class="${cls}">${wordSpans.join('')}</span>`
   const css = `.${cls}{display:flex;flex-wrap:wrap;${userSelect}}`
 
-  return { html, css, ariaText: text, contentId }
+  const ariaText = level === 'maximum' ? '' : text
+  return { html, css, ariaText, contentId }
 }

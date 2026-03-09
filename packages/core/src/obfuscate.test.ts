@@ -96,6 +96,19 @@ describe('obfuscateText levels', () => {
     expect(hasZwc).toBe(true)
   })
 
+  test('ariaText contains the original text for light and medium levels', () => {
+    const text = 'hello world'
+    const light = obfuscateText(text, { seed: SEED, level: 'light' })
+    const medium = obfuscateText(text, { seed: SEED, level: 'medium' })
+    expect(light.ariaText).toBe(text)
+    expect(medium.ariaText).toBe(text)
+  })
+
+  test('ariaText is empty string for maximum level', () => {
+    const result = obfuscateText('hello world', { seed: SEED, level: 'maximum' })
+    expect(result.ariaText).toBe('')
+  })
+
   test('light < medium < maximum in HTML length', () => {
     const text = 'hello world test'
     const light = obfuscateText(text, { seed: SEED, level: 'light' })

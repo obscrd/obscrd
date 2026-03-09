@@ -22,9 +22,9 @@ describe('createSeed', () => {
 // ── deriveSeed ──
 
 describe('deriveSeed', () => {
-  test('returns an 8-character hex string', () => {
+  test('returns a 16-character hex string', () => {
     const result = deriveSeed('a'.repeat(32), 'block-1')
-    expect(result).toMatch(/^[0-9a-f]{8}$/)
+    expect(result).toMatch(/^[0-9a-f]{16}$/)
   })
 
   test('is deterministic for the same inputs', () => {
@@ -49,6 +49,6 @@ describe('deriveSeed', () => {
 
   test('does not return all zeros or the fallback value', () => {
     const result = deriveSeed(createSeed(), 'test')
-    expect(result).not.toBe('00000000')
+    expect(result).not.toBe('0000000000000000')
   })
 })

@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, createRef } from 'react'
 import { ProtectedText } from '../text'
 import { renderWithProvider } from './render'
 import { describe, expect, mock, test } from 'bun:test'
@@ -47,6 +47,26 @@ describe('ProtectedText', () => {
     const container = renderWithProvider(createElement(ProtectedText, { className: 'custom' }, 'Hi'))
     const el = container.querySelector('.custom')
     expect(el).not.toBeNull()
+  })
+
+  test('forwards ref to the rendered element', () => {
+    const ref = createRef<HTMLElement>()
+    renderWithProvider(createElement(ProtectedText, { ref }, 'Hello'))
+    expect(ref.current).toBeInstanceOf(HTMLElement)
+    expect(ref.current?.tagName).toBe('SPAN')
+  })
+
+  test('forwards ref with custom as prop', () => {
+    const ref = createRef<HTMLElement>()
+    renderWithProvider(createElement(ProtectedText, { ref, as: 'p' }, 'Hello'))
+    expect(ref.current?.tagName).toBe('P')
+  })
+
+  test('passes id prop to the rendered element', () => {
+    const container = renderWithProvider(createElement(ProtectedText, { id: 'pricing', as: 'h2' }, 'Pricing'))
+    const el = container.querySelector('#pricing')
+    expect(el).not.toBeNull()
+    expect(el?.tagName).toBe('H2')
   })
 
   test('warns on non-string children in development', () => {

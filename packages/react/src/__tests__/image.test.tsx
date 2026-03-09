@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, createRef } from 'react'
 import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
 import { ProtectedImage } from '../image'
@@ -31,6 +31,23 @@ describe('ProtectedImage', () => {
     const container = render(createElement(ProtectedImage, { src: '/photo.jpg', alt: 'A photo', className: 'my-img' }))
     const canvas = container.querySelector('.my-img')
     expect(canvas).not.toBeNull()
+  })
+
+  test('forwards ref to the canvas element', () => {
+    const ref = createRef<HTMLCanvasElement>()
+    render(createElement(ProtectedImage, { ref, src: '/photo.jpg', alt: 'A photo', width: 200, height: 100 }))
+    expect(ref.current).toBeInstanceOf(HTMLCanvasElement)
+  })
+
+  test('shows loading skeleton before image loads', () => {
+    const container = render(
+      createElement(ProtectedImage, { src: '/photo.jpg', alt: 'A photo', width: 300, height: 200 }),
+    )
+    const skeleton = container.querySelector('[aria-busy="true"]')
+    expect(skeleton).not.toBeNull()
+    expect(skeleton?.getAttribute('aria-label')).toBe('Loading A photo')
+    const style = container.querySelector('style')
+    expect(style?.textContent).toContain('obscrd-pulse')
   })
 
   test('renders error fallback with alt text when image fails', async () => {

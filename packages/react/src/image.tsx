@@ -1,5 +1,4 @@
-import type { CSSProperties } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { type CSSProperties, forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 
 export interface ProtectedImageProps {
   src: string
@@ -10,16 +9,30 @@ export interface ProtectedImageProps {
   style?: CSSProperties
 }
 
-export function ProtectedImage({ src, alt, width, height, className, style }: ProtectedImageProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+const pulseCSS = '@keyframes obscrd-pulse{0%,100%{opacity:1}50%{opacity:0.5}}'
+
+export const ProtectedImage = forwardRef<HTMLCanvasElement, ProtectedImageProps>(function ProtectedImage(
+  { src, alt, width, height, className, style },
+  ref,
+) {
+  const innerRef = useRef<HTMLCanvasElement>(null)
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(false)
+
+  const setRefs = useCallback(
+    (node: HTMLCanvasElement | null) => {
+      innerRef.current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) ref.current = node
+    },
+    [ref],
+  )
 
   useEffect(() => {
     setLoaded(false)
     setError(false)
 
-    const canvas = canvasRef.current
+    const canvas = innerRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
@@ -62,15 +75,34 @@ export function ProtectedImage({ src, alt, width, height, className, style }: Pr
   }
 
   return (
-    <canvas
-      ref={canvasRef}
-      role="img"
-      aria-label={alt}
-      className={className}
-      style={loaded ? style : { ...style, display: 'none' }}
-      data-loading={loaded ? undefined : ''}
-      onContextMenu={(e) => e.preventDefault()}
-      onDragStart={(e) => e.preventDefault()}
-    />
+    <>
+      {!loaded && <style dangerouslySetInnerHTML={{ __html: pulseCSS }} />}
+      {!loaded && (
+        <div
+          className={className}
+          style={{
+            ...style,
+            width: width ?? 200,
+            height: height ?? 150,
+            background: '#18181b',
+            borderRadius: '4px',
+            animation: 'obscrd-pulse 1.5s ease-in-out infinite',
+          }}
+          aria-busy="true"
+          aria-label={`Loading ${alt}`}
+        />
+      )}
+      <canvas
+        ref={setRefs}
+        role="img"
+        aria-label={alt}
+        className={className}
+        style={loaded ? style : { position: 'absolute', visibility: 'hidden' }}
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
+      />
+    </>
   )
-}
+})
+
+ProtectedImage.displayName = 'ProtectedImage'

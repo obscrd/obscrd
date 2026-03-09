@@ -1,5 +1,5 @@
 import { obfuscateEmail } from '@obscrd/core'
-import { useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { ProtectedLink } from './link'
 import { useObscrdContext } from './provider'
 import { srOnly } from './styles'
@@ -18,33 +18,24 @@ function buildMailto(email: string, opts: { subject?: string; body?: string; cc?
 
 export interface ProtectedEmailProps {
   email: string
-  /** Display content — string for obfuscated text, or React elements (icons, buttons, etc.) */
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
-  /** Email subject line */
   subject?: string
-  /** Email body text */
   body?: string
-  /** CC recipients (comma-separated) */
   cc?: string
-  /** BCC recipients (comma-separated) */
   bcc?: string
-  /** Additional click handler */
   onClick?: React.MouseEventHandler<HTMLAnchorElement>
+  obfuscate?: boolean
+  id?: string
+  target?: string
+  rel?: string
 }
 
-export function ProtectedEmail({
-  email,
-  children,
-  className,
-  style,
-  subject,
-  body,
-  cc,
-  bcc,
-  onClick,
-}: ProtectedEmailProps) {
+export const ProtectedEmail = forwardRef<HTMLAnchorElement, ProtectedEmailProps>(function ProtectedEmail(
+  { email, children, className, style, subject, body, cc, bcc, onClick, obfuscate = true, id, target, rel },
+  ref,
+) {
   const { config } = useObscrdContext()
   const result = useMemo(() => obfuscateEmail(email, config.seed), [email, config.seed])
   const href = buildMailto(email, { subject, body, cc, bcc })
@@ -52,19 +43,31 @@ export function ProtectedEmail({
 
   return (
     <>
-      {isTextChild && <style dangerouslySetInnerHTML={{ __html: result.css }} />}
-      <ProtectedLink href={href} className={className} style={style} onClick={onClick}>
-        {isTextChild ? (
+      {obfuscate && isTextChild && <style dangerouslySetInnerHTML={{ __html: result.css }} />}
+      <ProtectedLink
+        ref={ref}
+        id={id}
+        href={href}
+        className={className}
+        style={style}
+        onClick={onClick}
+        obfuscate={obfuscate}
+        target={target}
+        rel={rel}
+      >
+        {obfuscate && isTextChild ? (
           <>
             <span style={srOnly}>{children ?? email}</span>
             <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: result.html }} />
           </>
         ) : (
-          children
+          (children ?? email)
         )}
       </ProtectedLink>
     </>
   )
-}
+})
+
+ProtectedEmail.displayName = 'ProtectedEmail'
 
 export { buildMailto }

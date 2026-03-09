@@ -77,6 +77,8 @@ export function ObscrdProvider({
   )
 }
 
+ObscrdProvider.displayName = 'ObscrdProvider'
+
 export function useObscrdContext(): ObscrdContextValue {
   const context = useContext(ObscrdContext)
   if (!context) {

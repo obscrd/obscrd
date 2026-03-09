@@ -1,7 +1,6 @@
-import { useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 
 export interface BreadcrumbProps {
-  /** Unique identifier for this breadcrumb */
   id?: string
 }
 
@@ -9,11 +8,12 @@ function generateId(): string {
   return Math.random().toString(16).slice(2, 10)
 }
 
-export function Breadcrumb({ id }: BreadcrumbProps) {
+export const Breadcrumb = forwardRef<HTMLSpanElement, BreadcrumbProps>(function Breadcrumb({ id }, ref) {
   const contentId = useMemo(() => id ?? generateId(), [id])
 
   return (
     <span
+      ref={ref}
       aria-hidden="true"
       data-obscrd-breadcrumb={contentId}
       style={{
@@ -30,4 +30,6 @@ export function Breadcrumb({ id }: BreadcrumbProps) {
       {contentId}
     </span>
   )
-}
+})
+
+Breadcrumb.displayName = 'Breadcrumb'

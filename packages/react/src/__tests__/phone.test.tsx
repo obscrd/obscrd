@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, createRef } from 'react'
 import { ProtectedPhone } from '../phone'
 import { renderWithProvider } from './render'
 import { describe, expect, test } from 'bun:test'
@@ -54,5 +54,20 @@ describe('ProtectedPhone', () => {
     const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567' }))
     const anchor = container.querySelector('a')
     expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer')
+  })
+
+  test('forwards ref to the <a> element', () => {
+    const ref = createRef<HTMLAnchorElement>()
+    renderWithProvider(createElement(ProtectedPhone, { ref, phone: '+1-555-123-4567' }))
+    expect(ref.current).toBeInstanceOf(HTMLAnchorElement)
+  })
+
+  test('obfuscate={false} renders plain phone text', () => {
+    const container = renderWithProvider(createElement(ProtectedPhone, { phone: '+1-555-123-4567', obfuscate: false }))
+    const anchor = container.querySelector('a')
+    expect(anchor?.textContent).toBe('+1-555-123-4567')
+    expect(anchor?.getAttribute('href')).toBe('tel:+1-555-123-4567')
+    const style = container.querySelector('style')
+    expect(style).toBeNull()
   })
 })

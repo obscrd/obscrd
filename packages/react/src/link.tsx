@@ -1,36 +1,36 @@
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 
 export interface ProtectedLinkProps {
-  /** The URL to protect (mailto:, tel:, https://, etc.) */
   href: string
-  /** Display content — string or React elements (icons, buttons, etc.) */
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
-  /** Disable obfuscation (useful for debugging) */
   obfuscate?: boolean
   onClick?: React.MouseEventHandler<HTMLAnchorElement>
-  /** Target attribute for the link */
   target?: string
-  /** Rel attribute (defaults to "noopener noreferrer") */
   rel?: string
+  id?: string
 }
 
-export function ProtectedLink({
-  href,
-  children,
-  className,
-  style,
-  obfuscate: shouldObfuscate = true,
-  onClick,
-  target,
-  rel = 'noopener noreferrer',
-}: ProtectedLinkProps) {
+export const ProtectedLink = forwardRef<HTMLAnchorElement, ProtectedLinkProps>(function ProtectedLink(
+  {
+    href,
+    children,
+    className,
+    style,
+    obfuscate: shouldObfuscate = true,
+    onClick,
+    target,
+    rel = 'noopener noreferrer',
+    id,
+  },
+  ref,
+) {
   const [active, setActive] = useState(false)
 
   if (!shouldObfuscate) {
     return (
-      <a href={href} className={className} style={style} onClick={onClick} target={target} rel={rel}>
+      <a ref={ref} id={id} href={href} className={className} style={style} onClick={onClick} target={target} rel={rel}>
         {children}
       </a>
     )
@@ -38,6 +38,8 @@ export function ProtectedLink({
 
   return (
     <a
+      ref={ref}
+      id={id}
       href={active ? href : '#'}
       className={className}
       style={style ? { cursor: 'pointer', ...style } : { cursor: 'pointer' }}
@@ -52,4 +54,6 @@ export function ProtectedLink({
       {children}
     </a>
   )
-}
+})
+
+ProtectedLink.displayName = 'ProtectedLink'

@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, createRef } from 'react'
 import { buildMailto, ProtectedEmail } from '../email'
 import { renderWithProvider } from './render'
 import { describe, expect, test } from 'bun:test'
@@ -73,5 +73,20 @@ describe('ProtectedEmail', () => {
     const container = renderWithProvider(createElement(ProtectedEmail, { email: 'test@example.com' }))
     const anchor = container.querySelector('a')
     expect(anchor?.getAttribute('rel')).toBe('noopener noreferrer')
+  })
+
+  test('forwards ref to the <a> element', () => {
+    const ref = createRef<HTMLAnchorElement>()
+    renderWithProvider(createElement(ProtectedEmail, { ref, email: 'test@example.com' }))
+    expect(ref.current).toBeInstanceOf(HTMLAnchorElement)
+  })
+
+  test('obfuscate={false} renders plain email text', () => {
+    const container = renderWithProvider(createElement(ProtectedEmail, { email: 'test@example.com', obfuscate: false }))
+    const anchor = container.querySelector('a')
+    expect(anchor?.textContent).toBe('test@example.com')
+    expect(anchor?.getAttribute('href')).toBe('mailto:test@example.com')
+    const style = container.querySelector('style')
+    expect(style).toBeNull()
   })
 })

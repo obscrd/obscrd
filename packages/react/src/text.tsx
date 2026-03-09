@@ -1,20 +1,51 @@
 import { obfuscateText } from '@obscrd/core'
-import { type ReactNode, useMemo } from 'react'
+import { forwardRef, type ReactNode, useMemo } from 'react'
 import { useObscrdContext } from './provider'
+
+// ── Types ──
+
+type TextElement =
+  | 'span'
+  | 'p'
+  | 'div'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'li'
+  | 'td'
+  | 'th'
+  | 'label'
+  | 'legend'
+  | 'caption'
+  | 'blockquote'
+  | 'figcaption'
+  | 'strong'
+  | 'em'
+  | 'small'
+  | 'mark'
+  | 'cite'
+  | 'abbr'
+  | 'time'
+  | 'address'
+  | 'dt'
+  | 'dd'
 
 export interface ProtectedTextProps {
   children?: ReactNode
-  /** Override the protection level for this element */
   level?: 'light' | 'medium' | 'maximum'
-  /** HTML tag to render */
-  as?: keyof HTMLElementTagNameMap
-  /** Additional class name */
+  as?: TextElement
   className?: string
-  /** Disable obfuscation (useful for debugging) */
   obfuscate?: boolean
+  id?: string
 }
 
-export function ProtectedText({ children, level, as: Tag = 'span', className, obfuscate = true }: ProtectedTextProps) {
+export const ProtectedText = forwardRef<HTMLElement, ProtectedTextProps>(function ProtectedText(
+  { children, level, as: Tag = 'span', className, obfuscate = true, id },
+  ref,
+) {
   const { config } = useObscrdContext()
 
   if (process.env.NODE_ENV !== 'production' && obfuscate && typeof children !== 'string') {
@@ -31,14 +62,23 @@ export function ProtectedText({ children, level, as: Tag = 'span', className, ob
     [text, config.seed, effectiveLevel],
   )
 
+  // Cast needed: ForwardedRef<HTMLElement> doesn't satisfy the intersection of all specific element ref types
+  const elementRef = ref as any
+
   if (!obfuscate) {
-    return <Tag className={className}>{children}</Tag>
+    return (
+      <Tag ref={elementRef} id={id} className={className}>
+        {children}
+      </Tag>
+    )
   }
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: result.css }} />
-      <Tag className={className} dangerouslySetInnerHTML={{ __html: result.html }} />
+      <Tag ref={elementRef} id={id} className={className} dangerouslySetInnerHTML={{ __html: result.html }} />
     </>
   )
-}
+})
+
+ProtectedText.displayName = 'ProtectedText'

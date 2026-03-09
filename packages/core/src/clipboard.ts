@@ -1,8 +1,6 @@
-/**
- * Create a clipboard interceptor that replaces copied text with garbage
- */
-export function createClipboardInterceptor(): { attach: () => void; detach: () => void } {
+export function createClipboardInterceptor(target?: HTMLElement | null): { attach: () => void; detach: () => void } {
   let handler: ((e: ClipboardEvent) => void) | null = null
+  const element = target ?? (typeof document !== 'undefined' ? document : null)
 
   function shuffle(text: string): string {
     const chars = [...text]
@@ -14,25 +12,30 @@ export function createClipboardInterceptor(): { attach: () => void; detach: () =
   }
 
   function attach() {
-    if (typeof document === 'undefined') return
+    if (!element) return
     if (handler) return
 
     handler = (e: ClipboardEvent) => {
-      const selected = window.getSelection()?.toString()
+      const selection = window.getSelection()
+      if (!selection || selection.isCollapsed) return
+
+      if (target && !target.contains(selection.anchorNode)) return
+
+      const selected = selection.toString()
       if (!selected) return
 
       e.preventDefault()
       e.clipboardData?.setData('text/plain', shuffle(selected))
     }
 
-    document.addEventListener('copy', handler as EventListener)
+    element.addEventListener('copy', handler as EventListener)
   }
 
   function detach() {
-    if (typeof document === 'undefined') return
+    if (!element) return
     if (!handler) return
 
-    document.removeEventListener('copy', handler as EventListener)
+    element.removeEventListener('copy', handler as EventListener)
     handler = null
   }
 

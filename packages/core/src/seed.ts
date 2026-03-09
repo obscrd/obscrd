@@ -30,6 +30,10 @@ function fnv1a(str: string): number {
  * Derive a sub-seed for a specific content block
  */
 export function deriveSeed(masterSeed: string, contentId: string): string {
-  const hash = fnv1a(`${masterSeed}:${contentId}`)
-  return hash.toString(16).padStart(8, '0')
+  const input = `${masterSeed}:${contentId}`
+  const h1 = fnv1a(input)
+  const h2 = fnv1a(`${input}:${h1.toString(16)}`)
+  const hex1 = h1.toString(16).padStart(8, '0')
+  const hex2 = h2.toString(16).padStart(8, '0')
+  return `${hex1}${hex2}`
 }

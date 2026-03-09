@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.2.0
+
+### @obscrd/core
+- Upgraded `deriveSeed` from 32-bit to 64-bit hash (double FNV-1a), moving collision threshold from ~65K to ~4B blocks
+- Scoped clipboard interception: `createClipboardInterceptor` now accepts an optional `target` element
+- Fixed `ariaText` leaking plaintext at `maximum` protection level (now returns empty string)
+
+### @obscrd/react
+- Added `forwardRef` to all components: `ProtectedText`, `ProtectedLink`, `ProtectedEmail`, `ProtectedPhone`, `ProtectedImage`, `ProtectedBlock`, `Honeypot`, `Breadcrumb`
+- Added `displayName` to all components for React DevTools
+- Added `id` prop to `ProtectedText`, `ProtectedLink`, `ProtectedEmail`, `ProtectedPhone` for anchor linking
+- Added `obfuscate` toggle to `ProtectedEmail` and `ProtectedPhone` for debugging
+- Added `target` and `rel` passthrough on `ProtectedEmail` and `ProtectedPhone`
+- Narrowed `ProtectedText` `as` prop from `keyof HTMLElementTagNameMap` to curated text-bearing elements
+- `ProtectedBlock` clipboard interception now scoped to its subtree instead of the entire document
+- `ProtectedImage` shows a loading skeleton (pulse animation) instead of hiding the canvas before load
+
 ## 0.1.2
 
 ### @obscrd/core

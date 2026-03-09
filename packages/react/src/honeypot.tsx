@@ -1,15 +1,16 @@
 import { generateHoneypot } from '@obscrd/core'
-import { useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { useObscrdContext } from './provider'
 
 export interface HoneypotProps {
-  /** Custom copyright notice */
   copyrightNotice?: string
-  /** Content ID for forensic tracking */
   contentId?: string
 }
 
-export function Honeypot({ copyrightNotice, contentId }: HoneypotProps) {
+export const Honeypot = forwardRef<HTMLDivElement, HoneypotProps>(function Honeypot(
+  { copyrightNotice, contentId },
+  ref,
+) {
   const { config } = useObscrdContext()
 
   const html = useMemo(
@@ -21,5 +22,7 @@ export function Honeypot({ copyrightNotice, contentId }: HoneypotProps) {
     [contentId, copyrightNotice, config.copyrightNotice],
   )
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />
-}
+  return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
+})
+
+Honeypot.displayName = 'Honeypot'

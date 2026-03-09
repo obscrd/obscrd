@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, createRef } from 'react'
 import { ProtectedLink } from '../link'
 import { render } from './render'
 import { describe, expect, test } from 'bun:test'
@@ -61,6 +61,22 @@ describe('ProtectedLink', () => {
     )
     const anchor = container.querySelector('a')
     expect(anchor?.getAttribute('href')).toBe('https://example.com')
+  })
+
+  test('forwards ref to the <a> element', () => {
+    const ref = createRef<HTMLAnchorElement>()
+    render(createElement(ProtectedLink, { ref, href: 'https://example.com', children: 'Click me' }))
+    expect(ref.current).toBeInstanceOf(HTMLAnchorElement)
+    expect(ref.current?.tagName).toBe('A')
+  })
+
+  test('passes id prop to the <a> element', () => {
+    const container = render(
+      createElement(ProtectedLink, { href: 'https://example.com', children: 'Click me', id: 'my-link' }),
+    )
+    const anchor = container.querySelector('#my-link')
+    expect(anchor).not.toBeNull()
+    expect(anchor?.tagName).toBe('A')
   })
 
   test('passes className and style through', () => {
