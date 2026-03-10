@@ -49,3 +49,6 @@ coverage
 
 # Svelte
 .svelte-kit
+
+# Plans/design docs
+docs/plans
