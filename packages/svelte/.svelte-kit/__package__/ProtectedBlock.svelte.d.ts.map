@@ -1,1 +1,0 @@
-{"version":3,"file":"ProtectedBlock.svelte.d.ts","sourceRoot":"","sources":["../src/ProtectedBlock.svelte.ts"],"names":[],"mappings":"AAIA,OAAO,EAAsB,KAAK,OAAO,EAAE,MAAM,QAAQ,CAAA;AAOvD,UAAU,KAAK;IACb,QAAQ,CAAC,EAAE,OAAO,CAAA;IAClB,KAAK,CAAC,EAAE,MAAM,CAAA;CACf;AAuCH,QAAA,MAAM,cAAc,2CAAwC,CAAC;AAC7D,KAAK,cAAc,GAAG,UAAU,CAAC,OAAO,cAAc,CAAC,CAAC;AACxD,eAAe,cAAc,CAAC"}

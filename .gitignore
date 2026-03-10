@@ -46,3 +46,6 @@ coverage
 
 # Turbo
 .turbo
+
+# Svelte
+.svelte-kit
