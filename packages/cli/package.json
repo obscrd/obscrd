@@ -16,11 +16,13 @@
   },
   "keywords": [
     "cli",
-    "anti-scraping",
+    "obfuscator",
     "content-protection",
-    "obfuscation",
-    "developer-tools",
-    "ai-bot-protection"
+    "security",
+    "cryptographic-seed",
+    "text-obfuscation",
+    "dom-protection",
+    "developer-tools"
   ],
   "homepage": "https://obscrd.dev",
   "bugs": "https://github.com/obscrd/obscrd/issues"

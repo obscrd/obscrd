@@ -51,14 +51,15 @@
   },
   "keywords": [
     "react",
-    "anti-scraping",
+    "obfuscator",
     "content-protection",
-    "obfuscation",
-    "react-components",
-    "ai-bot-protection",
+    "security",
     "text-obfuscation",
-    "email-protection",
-    "scraping-defense"
+    "css-obfuscation",
+    "dom-protection",
+    "canvas-protection",
+    "react-components",
+    "encoder"
   ],
   "license": "MIT",
   "repository": {

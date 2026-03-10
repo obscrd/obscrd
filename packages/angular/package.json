@@ -51,11 +51,15 @@
   },
   "keywords": [
     "angular",
-    "anti-scraping",
+    "obfuscator",
     "content-protection",
-    "obfuscation",
+    "security",
+    "text-obfuscation",
+    "css-obfuscation",
+    "dom-protection",
+    "canvas-protection",
     "angular-components",
-    "ai-bot-protection"
+    "encoder"
   ],
   "license": "MIT",
   "repository": {

@@ -47,14 +47,15 @@
   },
   "keywords": [
     "vue",
-    "anti-scraping",
+    "obfuscator",
     "content-protection",
-    "obfuscation",
-    "vue-components",
-    "ai-bot-protection",
+    "security",
     "text-obfuscation",
-    "email-protection",
-    "scraping-defense"
+    "css-obfuscation",
+    "dom-protection",
+    "canvas-protection",
+    "vue-components",
+    "encoder"
   ],
   "license": "MIT",
   "repository": {

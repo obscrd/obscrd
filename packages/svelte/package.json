@@ -39,11 +39,15 @@
   },
   "keywords": [
     "svelte",
-    "anti-scraping",
+    "obfuscator",
     "content-protection",
-    "obfuscation",
+    "security",
+    "text-obfuscation",
+    "css-obfuscation",
+    "dom-protection",
+    "canvas-protection",
     "svelte-components",
-    "ai-bot-protection"
+    "encoder"
   ],
   "license": "MIT",
   "repository": {

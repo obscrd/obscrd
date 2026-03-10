@@ -41,16 +41,16 @@
     "tsup": "^8.4.0"
   },
   "keywords": [
-    "anti-scraping",
+    "obfuscator",
     "content-protection",
-    "obfuscation",
-    "ai-bot-protection",
-    "web-security",
-    "text-protection",
-    "scraping-defense",
+    "security",
+    "text-obfuscation",
+    "css-obfuscation",
+    "dom-protection",
     "honeypot",
-    "gptbot",
-    "ai-crawler"
+    "clipboard-interceptor",
+    "devtools-detection",
+    "encoder"
   ],
   "license": "MIT",
   "repository": {
