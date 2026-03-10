@@ -30,7 +30,11 @@ export interface ObscrdProviderProps {
   onDevToolsDetected?: () => void
 }
 
-const obscrdKey: InjectionKey<ComputedRef<ObscrdContextValue>> = Symbol('obscrd')
+interface ObscrdReactiveContext {
+  config: ComputedRef<ObscrdConfig>
+}
+
+const obscrdKey: InjectionKey<ObscrdReactiveContext> = Symbol('obscrd')
 
 // ── Provider ──
 
@@ -88,10 +92,8 @@ export const ObscrdProvider = defineComponent({
       props.honeypot ? generateHoneypot({ copyrightNotice: props.copyrightNotice, seed: resolvedSeed.value }) : '',
     )
 
-    const ctxValue = computed<ObscrdContextValue>(() => ({ config: config.value }))
-
-    // Provide the computed ref so descendants get reactive updates
-    provide(obscrdKey, ctxValue)
+    // Provide computed ref directly so descendants get reactive updates
+    provide(obscrdKey, { config })
 
     return () => {
       const children = slots.default?.()
@@ -112,10 +114,10 @@ export const ObscrdProvider = defineComponent({
 
 // ── Composable ──
 
-export function useObscrd(): ObscrdContextValue {
+export function useObscrd(): { config: ComputedRef<ObscrdConfig> } {
   const context = inject(obscrdKey)
   if (!context) {
     throw new Error('useObscrd() must be used within an <ObscrdProvider>')
   }
-  return context.value
+  return context
 }

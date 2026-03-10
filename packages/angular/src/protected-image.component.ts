@@ -5,6 +5,7 @@ import {
   computed,
   DestroyRef,
   type ElementRef,
+  effect,
   inject,
   input,
   signal,
@@ -148,7 +149,18 @@ export class ProtectedImageComponent {
   private imgRef: HTMLImageElement | null = null
 
   constructor() {
-    afterNextRender(() => this.loadImage())
+    afterNextRender(() => {
+      // Initial load + react to input changes
+      effect(() => {
+        // Track reactive inputs
+        void this.src()
+        void this.width()
+        void this.height()
+        void this.crossOrigin()
+        void this.objectFit()
+        this.loadImage()
+      })
+    })
   }
 
   private loadImage() {

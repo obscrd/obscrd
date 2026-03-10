@@ -28,7 +28,7 @@ export const ProtectedPhone = defineComponent({
   setup(props, { slots }) {
     const { config } = useObscrd()
 
-    const result = computed(() => obfuscatePhone(props.phone, config.seed))
+    const result = computed(() => obfuscatePhone(props.phone, config.value.seed))
     const href = computed(() => (props.sms ? `sms:${props.phone}` : `tel:${props.phone}`))
 
     return () => {

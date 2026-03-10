@@ -17,7 +17,7 @@ export const Breadcrumb = defineComponent({
 
     const contentId = computed(() => {
       if (props.id) return props.id
-      return deriveSeed(config.seed, 'breadcrumb').slice(0, 8)
+      return deriveSeed(config.value.seed, 'breadcrumb').slice(0, 8)
     })
 
     if (process.env.NODE_ENV !== 'production' && !props.id) {

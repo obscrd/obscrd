@@ -60,9 +60,9 @@ export const ProtectedText = defineComponent({
       return String(first.children ?? '')
     })
 
-    const effectiveLevel = computed(() => props.level ?? config.level ?? 'medium')
+    const effectiveLevel = computed(() => props.level ?? config.value.level ?? 'medium')
 
-    const result = computed(() => obfuscateText(text.value, { seed: config.seed, level: effectiveLevel.value }))
+    const result = computed(() => obfuscateText(text.value, { seed: config.value.seed, level: effectiveLevel.value }))
 
     return () => {
       if (!props.obfuscate) {

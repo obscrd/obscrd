@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
-
   // ── Types ──
 
   type ObjectFit = 'fill' | 'cover' | 'contain' | 'none'
@@ -94,11 +92,23 @@
 
   let resizeObserver: ResizeObserver | undefined
 
-  onMount(() => {
+  // Reload image when src or sizing props change
+  $effect(() => {
+    // Track reactive props
+    void src
+    void width
+    void height
+    void crossOrigin
+    void objectFit
+
+    // Only run after DOM is available
+    if (!canvasEl) return
+
     loadImage()
 
     if (width == null || height == null) {
       if (wrapperEl) {
+        resizeObserver?.disconnect()
         resizeObserver = new ResizeObserver((entries) => {
           const entry = entries[0]
           if (!entry) return
@@ -108,10 +118,10 @@
         resizeObserver.observe(wrapperEl)
       }
     }
-  })
 
-  onDestroy(() => {
-    resizeObserver?.disconnect()
+    return () => {
+      resizeObserver?.disconnect()
+    }
   })
 
   function loadImage() {

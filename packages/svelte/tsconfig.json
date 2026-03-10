@@ -1,5 +1,5 @@
 {
-  "extends": "@obscrd/typescript-config/library.json",
+  "extends": "@obscrd/typescript-config/svelte-library.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src"

@@ -19,8 +19,8 @@ export const Honeypot = defineComponent({
     const html = computed(() =>
       generateHoneypot({
         contentId: props.contentId,
-        copyrightNotice: props.copyrightNotice ?? config.copyrightNotice,
-        seed: config.seed,
+        copyrightNotice: props.copyrightNotice ?? config.value.copyrightNotice,
+        seed: config.value.seed,
       }),
     )
 

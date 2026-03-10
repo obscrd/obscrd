@@ -23,7 +23,7 @@ export const ProtectedBlock = defineComponent({
     const attachInterceptor = () => {
       detach?.()
       detach = undefined
-      if (config.clipboard === false) return
+      if (config.value.clipboard === false) return
       if (!blockRef.value) return
       const interceptor = createClipboardInterceptor(blockRef.value)
       interceptor.attach()
@@ -32,7 +32,7 @@ export const ProtectedBlock = defineComponent({
 
     onMounted(attachInterceptor)
 
-    watch(() => config.clipboard, attachInterceptor)
+    watch(() => config.value.clipboard, attachInterceptor)
 
     onUnmounted(() => {
       detach?.()

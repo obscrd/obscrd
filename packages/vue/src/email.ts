@@ -48,7 +48,7 @@ export const ProtectedEmail = defineComponent({
   setup(props, { slots }) {
     const { config } = useObscrd()
 
-    const result = computed(() => obfuscateEmail(props.email, config.seed))
+    const result = computed(() => obfuscateEmail(props.email, config.value.seed))
     const href = computed(() =>
       buildMailto(props.email, {
         subject: props.subject,
