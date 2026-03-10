@@ -1,3 +1,7 @@
+export { Breadcrumb, type BreadcrumbProps } from './breadcrumb'
+export { ProtectedEmail, type ProtectedEmailProps } from './email'
+export { Honeypot, type HoneypotProps } from './honeypot'
 export { ProtectedLink, type ProtectedLinkProps } from './link'
+export { ProtectedPhone, type ProtectedPhoneProps } from './phone'
 export { type ObscrdContextValue, ObscrdProvider, type ObscrdProviderProps, useObscrd } from './provider'
 export { ProtectedText, type ProtectedTextProps } from './text'
