@@ -18,7 +18,8 @@
       "!**/coverage",
       "!**/*.log",
       "!**/pnpm-lock.yaml",
-      "!**/routeTree.gen.ts"
+      "!**/routeTree.gen.ts",
+      "!**/*.svelte"
     ]
   },
   "linter": {

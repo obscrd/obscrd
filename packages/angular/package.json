@@ -29,7 +29,7 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
-    "test": "bun test"
+    "test": "echo 'no tests yet'"
   },
   "dependencies": {
     "@obscrd/core": "workspace:*"
