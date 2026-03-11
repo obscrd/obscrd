@@ -18,7 +18,8 @@
       "!**/coverage",
       "!**/*.log",
       "!**/pnpm-lock.yaml",
-      "!**/routeTree.gen.ts"
+      "!**/routeTree.gen.ts",
+      "!**/*.svelte"
     ]
   },
   "linter": {
@@ -94,6 +95,31 @@
   "overrides": [
     {
       "includes": ["packages/react/**"],
+      "linter": {
+        "rules": {
+          "security": { "noDangerouslySetInnerHtml": "off" },
+          "a11y": { "useAriaPropsSupportedByRole": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["packages/vue/**"],
+      "linter": {
+        "rules": {
+          "security": { "noDangerouslySetInnerHtml": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["packages/svelte/**"],
+      "linter": {
+        "rules": {
+          "security": { "noDangerouslySetInnerHtml": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["packages/angular/**"],
       "linter": {
         "rules": {
           "security": { "noDangerouslySetInnerHtml": "off" },

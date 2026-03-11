@@ -250,6 +250,7 @@ Renders an invisible forensic breadcrumb for content tracking. Forwards ref to t
 | `id` | `string` | Unique identifier (auto-generated if omitted) |
 | `ref` | `Ref<HTMLSpanElement>` | Forwarded ref |
 
+
 ## Hooks
 
 ### `useObscrd()`
@@ -268,6 +269,7 @@ Get a clipboard prevention handler.
 const { onCopy } = useProtectedCopy()
 return <div onCopy={onCopy}>Protected content</div>
 ```
+
 
 ## Accessibility
 
