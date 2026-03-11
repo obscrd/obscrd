@@ -42,7 +42,7 @@ describe('generateDecoyTexts', () => {
   })
 
   test('decoys are different from the original text', () => {
-    const text = 'Hello world'
+    const text = 'Hello world foo bar baz qux'
     const decoys = generateDecoyTexts('test-seed', text)
     for (const d of decoys) {
       expect(d).not.toBe(text)

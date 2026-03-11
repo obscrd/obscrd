@@ -88,15 +88,7 @@ export function generateDecoyTexts(seed: string, text: string): string[] {
   for (let i = 0; i < count; i++) {
     const decoySeed = deriveSeed(seed, `decoy:${i}:${text}`)
     const decoyRng = mulberry32(seedToNumber(decoySeed))
-    let shuffled = fisherYatesShuffle([...words], decoyRng)
-
-    // Re-shuffle if result matches original (only matters for multi-word texts)
-    let attempts = 0
-    while (words.length > 1 && shuffled.join(' ') === text && attempts < 10) {
-      shuffled = fisherYatesShuffle([...words], decoyRng)
-      attempts++
-    }
-
+    const shuffled = fisherYatesShuffle([...words], decoyRng)
     decoys.push(shuffled.join(' '))
   }
 
