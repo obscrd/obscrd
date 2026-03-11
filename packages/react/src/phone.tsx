@@ -1,4 +1,4 @@
-import { obfuscatePhone } from '@obscrd/core'
+import { generateDecoyTexts, generateSrOnlyStyle, obfuscatePhone } from '@obscrd/core'
 import { forwardRef, useMemo } from 'react'
 import { ProtectedLink } from './link'
 import { useObscrdContext } from './provider'
@@ -25,6 +25,16 @@ export const ProtectedPhone = forwardRef<HTMLAnchorElement, ProtectedPhoneProps>
   const result = useMemo(() => obfuscatePhone(phone, config.seed), [phone, config.seed])
   const href = sms ? `sms:${phone}` : `tel:${phone}`
   const isTextChild = typeof children === 'string' || children === undefined
+  const displayText = (children as string) ?? phone
+  const a11yMode = config.accessibilityMode ?? 'standard'
+
+  const a11y = useMemo(() => {
+    if (a11yMode === 'standard' || !obfuscate || !isTextChild) return null
+    return {
+      srStyle: generateSrOnlyStyle(config.seed, displayText) as React.CSSProperties,
+      decoys: generateDecoyTexts(config.seed, displayText),
+    }
+  }, [a11yMode, config.seed, displayText, obfuscate, isTextChild])
 
   return (
     <>
@@ -42,8 +52,13 @@ export const ProtectedPhone = forwardRef<HTMLAnchorElement, ProtectedPhoneProps>
       >
         {obfuscate && isTextChild ? (
           <>
-            <span style={srOnly}>{children ?? phone}</span>
+            <span style={a11y ? a11y.srStyle : srOnly}>{displayText}</span>
             <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: result.html }} />
+            {a11y?.decoys.map((d, i) => (
+              <span key={`decoy-${i}`} style={{ display: 'none' }}>
+                {d}
+              </span>
+            ))}
           </>
         ) : (
           (children ?? phone)
