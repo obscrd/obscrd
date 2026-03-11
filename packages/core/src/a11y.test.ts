@@ -1,4 +1,4 @@
-import { generateSrOnlyStyle } from './a11y'
+import { generateDecoyTexts, generateSrOnlyStyle } from './a11y'
 import { describe, expect, test } from 'bun:test'
 
 describe('generateSrOnlyStyle', () => {
@@ -30,6 +30,48 @@ describe('generateSrOnlyStyle', () => {
     for (let i = 0; i < 50; i++) {
       const style = generateSrOnlyStyle(`seed-${i}`, `text-${i}`)
       expect(style.overflow).toBe('hidden')
+    }
+  })
+})
+
+describe('generateDecoyTexts', () => {
+  test('returns 1-3 decoy strings', () => {
+    const decoys = generateDecoyTexts('test-seed', 'Hello world')
+    expect(decoys.length).toBeGreaterThanOrEqual(1)
+    expect(decoys.length).toBeLessThanOrEqual(3)
+  })
+
+  test('decoys are different from the original text', () => {
+    const text = 'Hello world'
+    const decoys = generateDecoyTexts('test-seed', text)
+    for (const d of decoys) {
+      expect(d).not.toBe(text)
+    }
+  })
+
+  test('decoys contain similar words (shuffled)', () => {
+    const text = 'Hello world foo bar'
+    const decoys = generateDecoyTexts('test-seed', text)
+    const originalWords = new Set(text.split(/\s+/))
+    for (const d of decoys) {
+      const decoyWords = d.split(/\s+/)
+      for (const w of decoyWords) {
+        expect(originalWords.has(w)).toBe(true)
+      }
+    }
+  })
+
+  test('is deterministic', () => {
+    const a = generateDecoyTexts('seed-x', 'Hello world')
+    const b = generateDecoyTexts('seed-x', 'Hello world')
+    expect(a).toEqual(b)
+  })
+
+  test('single-word text still produces decoys', () => {
+    const decoys = generateDecoyTexts('test-seed', 'Hello')
+    expect(decoys.length).toBeGreaterThanOrEqual(1)
+    for (const d of decoys) {
+      expect(d).toBe('Hello')
     }
   })
 })

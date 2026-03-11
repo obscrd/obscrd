@@ -1,5 +1,5 @@
 export type { SrOnlyStyle } from './a11y'
-export { generateSrOnlyStyle } from './a11y'
+export { generateDecoyTexts, generateSrOnlyStyle } from './a11y'
 export { createClipboardInterceptor } from './clipboard'
 export { obfuscateAddress, obfuscateEmail, obfuscatePhone } from './contact'
 export { detectDevTools } from './devtools'
