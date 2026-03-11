@@ -26,7 +26,7 @@
 
 ### Core
 - Upgrade `deriveSeed` from 32-bit FNV-1a to a wider hash — birthday problem means collisions likely after ~65K unique content blocks
-- `ariaText` for maximum level should return empty string or generic placeholder, not clean plaintext
+- ~~`ariaText` for maximum level~~ — resolved: `ariaText` now always returns clean text for accessibility (sr-only span is visually hidden)
 
 ## v0.3 — Style & Performance
 

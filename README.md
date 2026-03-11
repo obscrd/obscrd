@@ -58,7 +58,7 @@ function App() {
 - **Image protection** — Canvas-based rendering, no direct URLs
 - **robots.txt automation** — Block 30+ AI crawlers with one function
 - **Forensic breadcrumbs** — Prove someone stole your content
-- **Accessible** — WCAG 2.2 AA compliant, screen readers work normally
+- **Accessible** — WCAG 2.2 AA compliant. All components render visually-hidden text for screen readers with `aria-hidden` on obfuscated content
 
 ## Threat Model
 

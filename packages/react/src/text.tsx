@@ -1,6 +1,7 @@
 import { obfuscateText } from '@obscrd/core'
 import { forwardRef, type ReactNode, useMemo } from 'react'
 import { useObscrdContext } from './provider'
+import { srOnly } from './styles'
 
 // ── Types ──
 
@@ -76,7 +77,10 @@ export const ProtectedText = forwardRef<HTMLElement, ProtectedTextProps>(functio
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: result.css }} />
-      <Tag ref={elementRef} id={id} className={className} dangerouslySetInnerHTML={{ __html: result.html }} />
+      <Tag ref={elementRef} id={id} className={className}>
+        <span style={srOnly}>{text}</span>
+        <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: result.html }} />
+      </Tag>
     </>
   )
 })

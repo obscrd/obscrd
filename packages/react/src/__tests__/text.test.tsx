@@ -11,7 +11,37 @@ describe('ProtectedText', () => {
 
   test('output contains shuffled spans with data-o attributes', () => {
     const container = renderWithProvider(createElement(ProtectedText, null, 'Hello'))
-    expect(container.querySelectorAll('[data-o]').length).toBeGreaterThan(0)
+    const ariaHidden = container.querySelector('[aria-hidden="true"]')
+    expect(ariaHidden?.querySelectorAll('[data-o]').length).toBeGreaterThan(0)
+  })
+
+  test('renders sr-only span with clean text for screen readers', () => {
+    const container = renderWithProvider(createElement(ProtectedText, null, 'Hello world'))
+    const srOnlySpan = container.querySelector('span[style*="clip"]')
+    expect(srOnlySpan).not.toBeNull()
+    expect(srOnlySpan?.textContent).toBe('Hello world')
+  })
+
+  test('obfuscated content has aria-hidden', () => {
+    const container = renderWithProvider(createElement(ProtectedText, null, 'Hello world'))
+    const ariaHidden = container.querySelector('[aria-hidden="true"]')
+    expect(ariaHidden).not.toBeNull()
+    expect(ariaHidden?.querySelectorAll('[data-o]').length).toBeGreaterThan(0)
+  })
+
+  test('sr-only text is present at maximum level', () => {
+    const container = renderWithProvider(createElement(ProtectedText, { level: 'maximum' }, 'Secret content'))
+    const srOnlySpan = container.querySelector('span[style*="clip"]')
+    expect(srOnlySpan).not.toBeNull()
+    expect(srOnlySpan?.textContent).toBe('Secret content')
+  })
+
+  test('heading semantics preserved with sr-only approach', () => {
+    const container = renderWithProvider(createElement(ProtectedText, { as: 'h1' }, 'Page Title'))
+    const h1 = container.querySelector('h1')
+    expect(h1).not.toBeNull()
+    const srOnlySpan = h1?.querySelector('span[style*="clip"]')
+    expect(srOnlySpan?.textContent).toBe('Page Title')
   })
 
   test('does not use aria-label on generic elements', () => {
