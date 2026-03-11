@@ -23,6 +23,8 @@ export interface ObscrdProviderProps {
   copyrightNotice?: string
   /** Content ID prefix for forensic tracking */
   contentIdPrefix?: string
+  /** Accessibility mode: standard (default), hardened, or maximum */
+  accessibilityMode?: 'standard' | 'hardened' | 'maximum'
   /** Callback when DevTools are detected (requires devtools: true) */
   onDevToolsDetected?: () => void
 }
@@ -36,6 +38,7 @@ export function ObscrdProvider({
   honeypot,
   copyrightNotice,
   contentIdPrefix,
+  accessibilityMode = 'standard',
   onDevToolsDetected,
 }: ObscrdProviderProps) {
   const [mounted, setMounted] = useState(false)
@@ -61,8 +64,17 @@ export function ObscrdProvider({
   }, [devtools, onDevToolsDetected])
 
   const config = useMemo<ObscrdConfig>(
-    () => ({ seed: resolvedSeed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix }),
-    [resolvedSeed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix],
+    () => ({
+      seed: resolvedSeed,
+      level,
+      clipboard,
+      devtools,
+      honeypot,
+      copyrightNotice,
+      contentIdPrefix,
+      accessibilityMode,
+    }),
+    [resolvedSeed, level, clipboard, devtools, honeypot, copyrightNotice, contentIdPrefix, accessibilityMode],
   )
 
   // ── Auto-injected honeypot ──
