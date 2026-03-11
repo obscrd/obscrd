@@ -1,10 +1,4 @@
-import {
-  fragmentAccessibleText,
-  generateCssContentA11y,
-  generateDecoyTexts,
-  generateSrOnlyStyle,
-  obfuscateText,
-} from '@obscrd/core'
+import { fragmentAccessibleText, generateCssContentA11y, generateDecoyTexts, obfuscateText } from '@obscrd/core'
 import { forwardRef, type ReactNode, useMemo } from 'react'
 import { useObscrdContext } from './provider'
 import { srOnly } from './styles'
@@ -73,7 +67,6 @@ export const ProtectedText = forwardRef<HTMLElement, ProtectedTextProps>(functio
   const a11y = useMemo(() => {
     if (a11yMode === 'standard') return null
     return {
-      srStyle: generateSrOnlyStyle(config.seed, text),
       decoys: generateDecoyTexts(config.seed, text),
       fragments: fragmentAccessibleText(text, config.seed),
       cssContent: a11yMode === 'maximum' ? generateCssContentA11y(text, config.seed) : null,
