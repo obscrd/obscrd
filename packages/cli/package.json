@@ -6,7 +6,8 @@
     "obscrd": "./bin.cjs"
   },
   "files": [
-    "bin.cjs"
+    "bin.cjs",
+    "README.md"
   ],
   "license": "MIT",
   "repository": {

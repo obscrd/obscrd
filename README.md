@@ -90,4 +90,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ## License
 
-MIT © [Mosr LLC](https://obscrd.dev)
+MIT © [Mosr LLC](https://larsmosr.com)

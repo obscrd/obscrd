@@ -63,7 +63,7 @@
 ### Project ID System
 - `npx @obscrd/core init` generates a project ID (replaces raw seed)
 - Project ID works identically to seed in the SDK — no breaking changes
-- Dashboard at `obscrd.dev/dashboard` lets users create projects and get IDs
+- Dashboard at `app.obscrd.dev` lets users create projects and get IDs
 
 ### Breadcrumb Tracking
 - Breadcrumb IDs phone home to a tracking API
