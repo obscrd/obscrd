@@ -1,4 +1,4 @@
-import { generateDecoyTexts, generateSrOnlyStyle } from './a11y'
+import { fragmentAccessibleText, generateDecoyTexts, generateSrOnlyStyle } from './a11y'
 import { describe, expect, test } from 'bun:test'
 
 describe('generateSrOnlyStyle', () => {
@@ -73,5 +73,59 @@ describe('generateDecoyTexts', () => {
     for (const d of decoys) {
       expect(d).toBe('Hello')
     }
+  })
+})
+
+describe('fragmentAccessibleText', () => {
+  test('returns fragmentIds, fragments, and describedBy', () => {
+    const result = fragmentAccessibleText('Hello world foo bar baz', 'test-seed')
+    expect(result.fragmentIds).toBeDefined()
+    expect(result.fragments).toBeDefined()
+    expect(result.describedBy).toBeDefined()
+  })
+
+  test('fragments count is between min and max', () => {
+    const result = fragmentAccessibleText('Hello world foo bar baz qux quux', 'test-seed')
+    expect(result.fragments.length).toBeGreaterThanOrEqual(2)
+    expect(result.fragments.length).toBeLessThanOrEqual(5)
+  })
+
+  test('fragment texts concatenate to original text', () => {
+    const text = 'Hello world foo bar baz'
+    const result = fragmentAccessibleText(text, 'test-seed')
+    const reassembled = result.fragments.map((f) => f.text).join('')
+    expect(reassembled).toBe(text)
+  })
+
+  test('each fragment has a unique ID', () => {
+    const result = fragmentAccessibleText('Hello world foo bar', 'test-seed')
+    const ids = result.fragments.map((f) => f.id)
+    const unique = new Set(ids)
+    expect(unique.size).toBe(ids.length)
+  })
+
+  test('describedBy is space-separated fragment IDs', () => {
+    const result = fragmentAccessibleText('Hello world foo bar', 'test-seed')
+    expect(result.describedBy).toBe(result.fragmentIds.join(' '))
+  })
+
+  test('each fragment has a sr-only style with overflow:hidden', () => {
+    const result = fragmentAccessibleText('Hello world foo bar', 'test-seed')
+    for (const f of result.fragments) {
+      expect(f.style.overflow).toBe('hidden')
+    }
+  })
+
+  test('is deterministic', () => {
+    const a = fragmentAccessibleText('Hello world', 'seed-a')
+    const b = fragmentAccessibleText('Hello world', 'seed-a')
+    expect(a.fragmentIds).toEqual(b.fragmentIds)
+    expect(a.fragments.map((f) => f.text)).toEqual(b.fragments.map((f) => f.text))
+  })
+
+  test('short text (1-2 words) produces at least 1 fragment', () => {
+    const result = fragmentAccessibleText('Hi', 'test-seed')
+    expect(result.fragments.length).toBeGreaterThanOrEqual(1)
+    expect(result.fragments[0].text).toBe('Hi')
   })
 })
