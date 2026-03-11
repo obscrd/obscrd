@@ -1,5 +1,5 @@
-export type { A11yFragment, FragmentedA11yResult, SrOnlyStyle } from './a11y'
-export { fragmentAccessibleText, generateDecoyTexts, generateSrOnlyStyle } from './a11y'
+export type { A11yFragment, CssContentA11yResult, FragmentedA11yResult, SrOnlyStyle } from './a11y'
+export { fragmentAccessibleText, generateCssContentA11y, generateDecoyTexts, generateSrOnlyStyle } from './a11y'
 export { createClipboardInterceptor } from './clipboard'
 export { obfuscateAddress, obfuscateEmail, obfuscatePhone } from './contact'
 export { detectDevTools } from './devtools'

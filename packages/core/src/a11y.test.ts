@@ -1,4 +1,4 @@
-import { fragmentAccessibleText, generateDecoyTexts, generateSrOnlyStyle } from './a11y'
+import { fragmentAccessibleText, generateCssContentA11y, generateDecoyTexts, generateSrOnlyStyle } from './a11y'
 import { describe, expect, test } from 'bun:test'
 
 describe('generateSrOnlyStyle', () => {
@@ -127,5 +127,52 @@ describe('fragmentAccessibleText', () => {
     const result = fragmentAccessibleText('Hi', 'test-seed')
     expect(result.fragments.length).toBeGreaterThanOrEqual(1)
     expect(result.fragments[0].text).toBe('Hi')
+  })
+})
+
+describe('generateCssContentA11y', () => {
+  test('returns className and css', () => {
+    const result = generateCssContentA11y('Hello world', 'test-seed')
+    expect(result.className).toBeDefined()
+    expect(result.css).toBeDefined()
+  })
+
+  test('className starts with obscrd-sr-', () => {
+    const result = generateCssContentA11y('Hello', 'test-seed')
+    expect(result.className).toMatch(/^obscrd-sr-[0-9a-f]+$/)
+  })
+
+  test('css contains content property with the text', () => {
+    const result = generateCssContentA11y('Hello world', 'test-seed')
+    expect(result.css).toContain('content:')
+    expect(result.css).toContain('Hello world')
+  })
+
+  test('css contains ::before pseudo-element', () => {
+    const result = generateCssContentA11y('Hello', 'test-seed')
+    expect(result.css).toContain('::before')
+  })
+
+  test('css contains visually-hidden properties', () => {
+    const result = generateCssContentA11y('Hello', 'test-seed')
+    expect(result.css).toContain('position:absolute')
+    expect(result.css).toContain('overflow:hidden')
+  })
+
+  test('escapes single quotes in text', () => {
+    const result = generateCssContentA11y("it's a test", 'test-seed')
+    expect(result.css).not.toContain("content:'it's")
+    expect(result.css).toContain("\\'")
+  })
+
+  test('escapes backslashes in text', () => {
+    const result = generateCssContentA11y('path\\to\\file', 'test-seed')
+    expect(result.css).toContain('\\\\')
+  })
+
+  test('is deterministic', () => {
+    const a = generateCssContentA11y('Hello', 'seed-a')
+    const b = generateCssContentA11y('Hello', 'seed-a')
+    expect(a).toEqual(b)
   })
 })

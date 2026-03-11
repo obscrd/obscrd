@@ -147,6 +147,30 @@ export function fragmentAccessibleText(
   }
 }
 
+export interface CssContentA11yResult {
+  className: string
+  css: string
+}
+
+export function generateCssContentA11y(text: string, seed: string): CssContentA11yResult {
+  const derived = deriveSeed(seed, `css-a11y:${text}`)
+  const cls = `obscrd-sr-${derived.slice(0, 8)}`
+
+  const escaped = text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\A ')
+
+  const css =
+    `.${cls}::before{` +
+    `content:'${escaped}';` +
+    'position:absolute;' +
+    'width:1px;height:1px;' +
+    'overflow:hidden;' +
+    'clip:rect(0,0,0,0);' +
+    'white-space:nowrap;' +
+    '}'
+
+  return { className: cls, css }
+}
+
 export function generateSrOnlyStyle(seed: string, text: string): SrOnlyStyle {
   const derived = deriveSeed(seed, `a11y:${text}`)
   const rng = mulberry32(seedToNumber(derived))
