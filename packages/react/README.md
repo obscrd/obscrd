@@ -1,6 +1,6 @@
 # @obscrd/react
 
-React components for content protection — obfuscate text, images, and contact info from scrapers and AI bots.
+React components — obfuscates text, images, and contact info in the DOM.
 
 ## Install
 
@@ -254,7 +254,7 @@ Renders an invisible forensic breadcrumb for content tracking. Forwards ref to t
 
 ### `useObscrd()`
 
-Access the Obscrd configuration context.
+Access the obscrd configuration context.
 
 ```tsx
 const { config } = useObscrd()
@@ -272,6 +272,8 @@ return <div onCopy={onCopy}>Protected content</div>
 ## Accessibility
 
 All components are WCAG 2.2 AA compliant. Contact components use visually-hidden spans to provide clean text for screen readers. Honeypots and breadcrumbs use `aria-hidden="true"` to be invisible to assistive technology. At `maximum` protection level, `ariaText` is omitted to prevent plaintext leakage.
+
+**Known issue:** TalkBack on Android may read individual words or characters instead of continuous text at `light` protection level. VoiceOver (macOS/iOS) and NVDA (Windows) are unaffected. A fix is tracked in the [roadmap](../../ROADMAP.md).
 
 ## License
 
