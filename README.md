@@ -43,6 +43,7 @@ Stops scrapers that read raw HTML. Does not stop headless browsers or screenshot
 
 | Package | Description |
 |---------|------------|
+| [obscrd](./packages/cli) | CLI — seed generation (`npx obscrd init`) |
 | [@obscrd/core](./packages/core) | Obfuscation engine, honeypots, clipboard, devtools |
 | [@obscrd/react](./packages/react) | React components and hooks |
 | [@obscrd/robots](./packages/robots) | robots.txt generation + server middleware |
