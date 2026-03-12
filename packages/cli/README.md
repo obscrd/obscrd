@@ -1,6 +1,6 @@
 # obscrd
 
-CLI for [Obscrd](https://obscrd.dev) — content protection SDK for React.
+CLI for [obscrd](https://obscrd.dev) — content protection SDK for React.
 
 [![npm](https://img.shields.io/npm/v/obscrd)](https://www.npmjs.com/package/obscrd)
 

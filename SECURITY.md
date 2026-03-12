@@ -1,10 +1,10 @@
 # Security Model & Limitations
 
-Obscrd is a **content obfuscation toolkit**, not a cryptographic security layer. It is designed
+obscrd is a **content obfuscation toolkit**, not a cryptographic security layer. It is designed
 to raise the cost of automated content scraping and casual copying — not to provide tamper-proof
 protection against determined attackers.
 
-## What Obscrd Protects Against
+## What obscrd Protects Against
 
 - **Naive web scrapers** that parse raw HTML without executing JavaScript
 - **Casual copy-paste** by making clipboard output scrambled or empty
@@ -12,7 +12,7 @@ protection against determined attackers.
 - **Right-click / drag-and-drop saving** of protected images
 - **Direct URL exposure** of images in the DOM (rendered via canvas)
 
-## What Obscrd Does NOT Protect Against
+## What obscrd Does NOT Protect Against
 
 - **Headless browsers** (Puppeteer, Playwright) that can execute JavaScript, trigger
   DOM events, and extract content programmatically
@@ -34,15 +34,15 @@ protection against determined attackers.
 
 ## Cryptographic Properties
 
-Obscrd does **not** use cryptographic primitives for content protection:
+obscrd does **not** use cryptographic primitives for content protection:
 
 - Seed derivation uses FNV-1a (a non-cryptographic hash) for performance and determinism
 - Shuffling uses Mulberry32 PRNG (not cryptographically secure)
 - Falls back to `Math.random()` when the Web Crypto API is unavailable
 - Obfuscation is deterministic by design (same seed + content = same output)
 
-These choices are intentional — Obscrd prioritizes fast, deterministic rendering compatible
-with SSR over cryptographic strength. **Do not use Obscrd to protect passwords, API keys,
+These choices are intentional — obscrd prioritizes fast, deterministic rendering compatible
+with SSR over cryptographic strength. **Do not use obscrd to protect passwords, API keys,
 PII, or any data requiring confidentiality guarantees.**
 
 ## Honeypots & Breadcrumbs
@@ -88,7 +88,7 @@ The built-in DevTools detector uses a `debugger` statement timing heuristic:
 
 ## Recommendations for Higher Security
 
-For use cases requiring stronger protection, combine Obscrd with server-side measures:
+For use cases requiring stronger protection, combine obscrd with server-side measures:
 
 - **Rate limiting** on content-serving endpoints
 - **Authentication** for premium/protected content
@@ -99,6 +99,6 @@ For use cases requiring stronger protection, combine Obscrd with server-side mea
 
 ## Reporting Vulnerabilities
 
-If you discover a security vulnerability in Obscrd, please report it responsibly
+If you discover a security vulnerability in obscrd, please report it responsibly
 by emailing [security@obscrd.dev](mailto:security@obscrd.dev). Do not open a
 public issue for security vulnerabilities.

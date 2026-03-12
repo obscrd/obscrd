@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/logo.png" alt="Obscrd" width="400" />
+  <img src=".github/logo.png" alt="obscrd" width="400" />
 </p>
 
 <p align="center">
@@ -62,7 +62,7 @@ function App() {
 
 ## Threat Model
 
-Obscrd protects against the most common content scraping vectors:
+obscrd protects against the most common content scraping vectors:
 
 **What it defends against:**
 - HTML scrapers reading `textContent` or `innerHTML`
@@ -78,7 +78,7 @@ Obscrd protects against the most common content scraping vectors:
 - Determined attackers who reverse-engineer the obfuscation technique
 - Browser extensions with page access
 
-Obscrd raises the cost of scraping significantly. It is not DRM — no client-side solution can be.
+obscrd raises the cost of scraping significantly. It is not DRM — no client-side solution can be.
 The goal is to make your content harder to steal than your competitors' content.
 
 For a detailed security analysis including cryptographic properties, bypass vectors,

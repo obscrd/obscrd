@@ -11,9 +11,9 @@ import {
 
 export function App() {
   return (
-    <ObscrdProvider seed="demo-seed-2024" honeypot copyrightNotice="Obscrd Demo">
+    <ObscrdProvider seed="demo-seed-2024" honeypot copyrightNotice="obscrd Demo">
       <main>
-        <h1>Obscrd Demo</h1>
+        <h1>obscrd Demo</h1>
         <p>View source or inspect the DOM to see obfuscation in action.</p>
 
         {/* ── Text Obfuscation ── */}
@@ -33,7 +33,7 @@ export function App() {
           <ProtectedEmail
             email="hello@obscrd.dev"
             subject="Hello from the demo"
-            body="I found your site through the Obscrd demo."
+            body="I found your site through the obscrd demo."
           />
           <br />
           <ProtectedPhone phone="+1-555-867-5309" />

@@ -31,7 +31,7 @@ bun run clean
 
 ## Architecture
 
-**Bun-based monorepo** for Obscrd's NPM packages — content protection SDK for React.
+**Bun-based monorepo** for obscrd's NPM packages — content protection SDK for React.
 
 ### Workspace Structure
 
