@@ -1,32 +1,68 @@
 # Obscrd Roadmap
 
+## v0.1 — Content Protection MVP ✅
+
+### Core Engine (`@obscrd/core`)
+- ✅ Deterministic text obfuscation with seeded PRNG (Mulberry32, 3 protection levels)
+- ✅ CSS Flexbox reordering via `data-o` attributes, decoy character injection, zero-width characters
+- ✅ Contact obfuscation: `obfuscateEmail`, `obfuscatePhone`, `obfuscateAddress` (RTL rendering + decoys)
+- ✅ Seed management: `createSeed()` (crypto-secure) and `deriveSeed()` (FNV-1a deterministic sub-seeds)
+- ✅ Honeypot generation with copyright traps, AI prompt injection strings, content ID watermarking
+- ✅ Clipboard interception with Fisher-Yates text scrambling (element-scoped)
+- ✅ DevTools detection with debugger timing heuristic and binary exponential backoff
+- ✅ CLI: `obscrd init` (generate seed → `.env`) and `obscrd seed` (print random seed)
+
+### React Components (`@obscrd/react`)
+- ✅ `ObscrdProvider` — context-based config, optional seed, SSR-safe, DevTools integration, auto-honeypot
+- ✅ `ProtectedText` — 14 semantic HTML elements via `as` prop, 3 protection levels, sr-only accessibility
+- ✅ `ProtectedEmail` — mailto link with subject/body/cc/bcc, RTL obfuscation
+- ✅ `ProtectedPhone` — tel/sms link support, RTL obfuscation
+- ✅ `ProtectedLink` — deferred href loading, right-click prevention
+- ✅ `ProtectedImage` — canvas-based rendering, drag/right-click prevention, responsive via ResizeObserver
+- ✅ `ProtectedBlock` — container for scoped clipboard interception
+- ✅ `Honeypot` — standalone copyright trap injection
+- ✅ `Breadcrumb` — forensic tracking via hidden data attributes, deterministic ID generation
+- ✅ `useObscrd()` and `useProtectedCopy()` hooks
+
+### AI Crawler Blocking (`@obscrd/robots`)
+- ✅ 20 AI crawler definitions (OpenAI, Anthropic, Google, Meta, ByteDance, etc.)
+- ✅ `generateRobotsTxt()` with block/allow lists, custom rules, sitemap support
+- ✅ `createMiddleware()` — universal handler for Express, Fastify, Node http
+
+### Infrastructure
+- ✅ Bun monorepo with tsup build (ESM + CJS + DTS)
+- ✅ Biome linting/formatting, Husky + lint-staged pre-commit hooks
+- ✅ CI pipeline (build → typecheck → lint → test)
+- ✅ Release pipeline with automated version bumping and NPM publish
+- ✅ WCAG 2.2 AA accessibility (sr-only spans, aria-hidden, aria-label)
+
 ## v0.2 — Component Polish
 
-### ProtectedLink Enhancements
-- `facetime` protocol support (`facetime:` URL scheme, iOS only)
-- `obfuscateChildren` prop to disable child content obfuscation independently of href obfuscation
-
 ### ProtectedText Enhancements
-- `forwardRef` support on all components (needed for animation libraries, scroll-to, integration with component systems)
-- `id` prop on `ProtectedText`, `ProtectedEmail`, `ProtectedPhone` (anchor linking to protected headings)
-- `displayName` on all components (survives minification in React DevTools)
-- Narrow the `as` prop type from `keyof HTMLElementTagNameMap` to a curated list of text-bearing elements
+- ✅ `forwardRef` support on all components
+- ✅ `id` prop on `ProtectedText`, `ProtectedEmail`, `ProtectedPhone`
+- ✅ `displayName` on all components (survives minification in React DevTools)
+- ✅ Narrow the `as` prop type to a curated list of text-bearing elements
+- ✅ ~~`ariaText` for maximum level~~ — resolved: `ariaText` always returns clean text (sr-only span is visually hidden)
+- ✅ Screen reader support via sr-only spans
 
 ### ProtectedEmail / ProtectedPhone
-- Standard anchor props passthrough (`target`, etc.) beyond what ProtectedLink already provides
-- `obfuscate` toggle prop (matching ProtectedText and ProtectedLink)
-
-### ProtectedBlock
-- Scope clipboard interception to the block's DOM subtree (currently attaches to `document` globally)
-- Document the global interception as a known limitation until scoped
+- ✅ Standard anchor props passthrough (`target`, `rel`) on both components
+- ✅ `obfuscate` toggle prop on both components
 
 ### ProtectedImage
-- Canvas pixel noise injection (subtle noise overlay that doesn't affect visual quality but corrupts pixel-level scraping)
-- Loading skeleton/placeholder while image loads (before canvas draws)
+- ✅ Loading placeholder with pulse animation while image loads
+- Canvas pixel noise injection (subtle noise overlay that corrupts pixel-level scraping)
+
+### ProtectedLink
+- `facetime` protocol support (`facetime:` URL scheme, iOS only)
+- `obfuscateChildren` prop to disable child content obfuscation independently of href
+
+### ProtectedBlock
+- Scope clipboard interception to the block's DOM subtree (currently falls back to `document` when no target passed)
 
 ### Core
-- Upgrade `deriveSeed` from 32-bit FNV-1a to a wider hash — birthday problem means collisions likely after ~65K unique content blocks
-- ~~`ariaText` for maximum level~~ — resolved: `ariaText` now always returns clean text for accessibility (sr-only span is visually hidden)
+- Upgrade `deriveSeed` from 32-bit FNV-1a to a wider hash — birthday collisions likely after ~65K unique content blocks
 
 ## v0.3 — Style & Performance
 
@@ -47,12 +83,10 @@
 
 ## v0.4 — Server-Side Utilities
 
-### Email Masking (inspired by obfuscate-mail)
-- `maskEmail(email, options)` — server-side utility that returns asterisk-masked email for display
+### Email Masking
+- `maskEmail(email, options)` — server-side utility returning asterisk-masked email for display
 - `hello@example.com` → `hel***@***.com`
 - Configurable: `asterisksLength`, `visibleCharactersStart/End`, `showDomainName`, `showDomainExtension`
-- Use case: account settings, password reset confirmations, admin dashboards
-- Different from `obfuscateEmail` which is client-side DOM obfuscation
 
 ### Phone/Address Masking
 - `maskPhone(phone, options)` — `+1-555-867-5309` → `+1-555-***-****`
@@ -63,7 +97,7 @@
 ### Project ID System
 - `npx @obscrd/core init` generates a project ID (replaces raw seed)
 - Project ID works identically to seed in the SDK — no breaking changes
-- Dashboard at `app.obscrd.dev` lets users create projects and get IDs
+- Dashboard at `obscrd.dev/dashboard` for project creation and ID management
 
 ### Breadcrumb Tracking
 - Breadcrumb IDs phone home to a tracking API
@@ -88,7 +122,7 @@
 
 ### Headless Browser Detection
 - Detect PhantomJS, Puppeteer, Playwright signatures
-- Complement the existing DevTools detection with bot-detection heuristics
+- Complement existing DevTools detection with bot-detection heuristics
 - Serve degraded/decoy content to detected headless browsers
 
 ### Rate Limiting Integration

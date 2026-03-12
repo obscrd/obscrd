@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      VERSION: ${{ inputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,22 +30,20 @@ jobs:
       # NOW resolve versions and clean up for publish
       - name: Prepare packages for publish
         run: |
-          VERSION=${{ inputs.version }}
-
           # Set versions
           for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
             node -e "
               const fs = require('fs');
-              const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
-              pkg.version = '${VERSION}';
+              const pkg = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+              pkg.version = process.env.VERSION;
               if (pkg.devDependencies?.['@obscrd/typescript-config']) {
                 delete pkg.devDependencies['@obscrd/typescript-config'];
               }
               if (pkg.dependencies?.['@obscrd/core'] === 'workspace:*') {
-                pkg.dependencies['@obscrd/core'] = '^${VERSION}';
+                pkg.dependencies['@obscrd/core'] = '^' + process.env.VERSION;
               }
-              fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
-            "
+              fs.writeFileSync(process.argv[1], JSON.stringify(pkg, null, 2) + '\n');
+            " "$f"
           done
 
       # Publish in dependency order
@@ -74,19 +74,18 @@ jobs:
           git checkout -- packages/*/package.json
 
           # Only bump the version field in each package.json
-          VERSION=${{ inputs.version }}
           for f in packages/core/package.json packages/react/package.json packages/robots/package.json packages/cli/package.json; do
             node -e "
               const fs = require('fs');
-              const pkg = JSON.parse(fs.readFileSync('$f', 'utf8'));
-              pkg.version = '${VERSION}';
-              fs.writeFileSync('$f', JSON.stringify(pkg, null, 2) + '\n');
-            "
+              const pkg = JSON.parse(fs.readFileSync(process.argv[1], 'utf8'));
+              pkg.version = process.env.VERSION;
+              fs.writeFileSync(process.argv[1], JSON.stringify(pkg, null, 2) + '\n');
+            " "$f"
           done
 
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add -A
-          git commit -m "chore: release v${{ inputs.version }}"
-          git tag "v${{ inputs.version }}"
+          git commit -m "chore: release v${VERSION}"
+          git tag "v${VERSION}"
           git push && git push --tags
