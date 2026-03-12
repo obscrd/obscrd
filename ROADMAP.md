@@ -59,10 +59,10 @@
 - `obfuscateChildren` prop to disable child content obfuscation independently of href
 
 ### ProtectedBlock
-- Scope clipboard interception to the block's DOM subtree (currently falls back to `document` when no target passed)
+- ✅ Scope clipboard interception to the block's DOM subtree (currently falls back to `document` when no target passed)
 
 ### Core
-- Upgrade `deriveSeed` from 32-bit FNV-1a to a wider hash — birthday collisions likely after ~65K unique content blocks
+- ✅ Upgrade `deriveSeed` from 32-bit FNV-1a to a wider hash — birthday collisions likely after ~65K unique content blocks
 
 ## v0.3 — Style & Performance
 
