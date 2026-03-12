@@ -3,11 +3,15 @@ import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
 import { ObscrdProvider } from '../provider'
 
-export function renderWithProvider(element: ReactElement, seed = 'test-seed') {
+export function renderWithProvider(
+  element: ReactElement,
+  seed = 'test-seed',
+  accessibilityMode?: 'standard' | 'hardened' | 'maximum',
+) {
   const container = document.createElement('div')
   const root = createRoot(container)
   flushSync(() => {
-    root.render(createElement(ObscrdProvider, { seed }, element))
+    root.render(createElement(ObscrdProvider, { seed, accessibilityMode }, element))
   })
   return container
 }

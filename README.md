@@ -58,7 +58,7 @@ function App() {
 - **Image protection** — Canvas-based rendering, no direct URLs
 - **robots.txt automation** — Block 30+ AI crawlers with one function
 - **Forensic breadcrumbs** — Prove someone stole your content
-- **Accessible** — WCAG 2.2 AA compliant. All components render visually-hidden text for screen readers with `aria-hidden` on obfuscated content
+- **Accessible** — WCAG 2.2 AA compliant. All components render visually-hidden text for screen readers with `aria-hidden` on obfuscated content. Optional `hardened` and `maximum` accessibility modes randomize the a11y DOM structure to resist scraper exploitation
 
 ## Threat Model
 
@@ -90,4 +90,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ## License
 
-MIT © [Mosr LLC](https://obscrd.dev)
+MIT © [Mosr LLC](https://larsmosr.com)

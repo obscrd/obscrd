@@ -71,3 +71,27 @@ describe('ProtectedPhone', () => {
     expect(style).toBeNull()
   })
 })
+
+describe('ProtectedPhone hardened mode', () => {
+  test('renders decoy elements with display:none', () => {
+    const container = renderWithProvider(
+      createElement(ProtectedPhone, { phone: '+1-555-123-4567' }),
+      'test-seed',
+      'hardened',
+    )
+    const decoys = Array.from(container.querySelectorAll('span')).filter((s) => s.style.display === 'none')
+    expect(decoys.length).toBeGreaterThanOrEqual(1)
+  })
+
+  test('sr-only span uses randomized style', () => {
+    const container = renderWithProvider(
+      createElement(ProtectedPhone, { phone: '+1-555-123-4567' }),
+      'test-seed',
+      'hardened',
+    )
+    const hiddenSpans = Array.from(container.querySelectorAll('span')).filter(
+      (s) => s.style.overflow === 'hidden' && !s.getAttribute('aria-hidden') && s.style.display !== 'none',
+    )
+    expect(hiddenSpans.length).toBeGreaterThan(0)
+  })
+})

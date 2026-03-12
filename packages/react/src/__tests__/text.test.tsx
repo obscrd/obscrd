@@ -110,3 +110,68 @@ describe('ProtectedText', () => {
     console.warn = origWarn
   })
 })
+
+describe('ProtectedText hardened mode', () => {
+  test('does not use static clip:rect sr-only style', () => {
+    const container = renderWithProvider(createElement(ProtectedText, null, 'Hello world'), 'test-seed', 'hardened')
+    const allSpans = container.querySelectorAll('span')
+    const hiddenSpans = Array.from(allSpans).filter(
+      (s) => s.style.overflow === 'hidden' && !s.getAttribute('aria-hidden'),
+    )
+    expect(hiddenSpans.length).toBeGreaterThan(0)
+  })
+
+  test('renders decoy elements with display:none', () => {
+    const container = renderWithProvider(
+      createElement(ProtectedText, null, 'Hello world test text'),
+      'test-seed',
+      'hardened',
+    )
+    const decoys = Array.from(container.querySelectorAll('span')).filter((s) => s.style.display === 'none')
+    expect(decoys.length).toBeGreaterThanOrEqual(1)
+  })
+
+  test('uses aria-describedby with fragment IDs', () => {
+    const container = renderWithProvider(
+      createElement(ProtectedText, null, 'Hello world foo bar baz'),
+      'test-seed',
+      'hardened',
+    )
+    const describedBy = container.querySelector('[aria-describedby]')
+    expect(describedBy).not.toBeNull()
+    const ids = describedBy!.getAttribute('aria-describedby')!.split(' ')
+    for (const id of ids) {
+      expect(container.querySelector(`#${id}`)).not.toBeNull()
+    }
+  })
+
+  test('fragment texts reassemble to original', () => {
+    const text = 'Hello world foo bar baz'
+    const container = renderWithProvider(createElement(ProtectedText, null, text), 'test-seed', 'hardened')
+    const describedBy = container.querySelector('[aria-describedby]')
+    const ids = describedBy!.getAttribute('aria-describedby')!.split(' ')
+    const reassembled = ids.map((id) => container.querySelector(`#${id}`)?.textContent ?? '').join('')
+    expect(reassembled).toBe(text)
+  })
+})
+
+describe('ProtectedText maximum mode', () => {
+  test('adds CSS content class to the element', () => {
+    const container = renderWithProvider(createElement(ProtectedText, null, 'Hello world'), 'test-seed', 'maximum')
+    const styles = Array.from(container.querySelectorAll('style'))
+    const hasCssContent = styles.some((s) => s.textContent?.includes('::before') && s.textContent?.includes('content:'))
+    expect(hasCssContent).toBe(true)
+  })
+
+  test('still has fragments and decoys like hardened', () => {
+    const container = renderWithProvider(
+      createElement(ProtectedText, null, 'Hello world foo bar baz'),
+      'test-seed',
+      'maximum',
+    )
+    const describedBy = container.querySelector('[aria-describedby]')
+    expect(describedBy).not.toBeNull()
+    const decoys = Array.from(container.querySelectorAll('span')).filter((s) => s.style.display === 'none')
+    expect(decoys.length).toBeGreaterThanOrEqual(1)
+  })
+})

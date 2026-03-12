@@ -1,4 +1,4 @@
-import { obfuscateEmail } from '@obscrd/core'
+import { generateDecoyTexts, generateSrOnlyStyle, obfuscateEmail } from '@obscrd/core'
 import { forwardRef, useMemo } from 'react'
 import { ProtectedLink } from './link'
 import { useObscrdContext } from './provider'
@@ -40,6 +40,16 @@ export const ProtectedEmail = forwardRef<HTMLAnchorElement, ProtectedEmailProps>
   const result = useMemo(() => obfuscateEmail(email, config.seed), [email, config.seed])
   const href = buildMailto(email, { subject, body, cc, bcc })
   const isTextChild = typeof children === 'string' || children === undefined
+  const displayText = (children as string) ?? email
+  const a11yMode = config.accessibilityMode ?? 'standard'
+
+  const a11y = useMemo(() => {
+    if (a11yMode === 'standard' || !obfuscate || !isTextChild) return null
+    return {
+      srStyle: generateSrOnlyStyle(config.seed, displayText) as React.CSSProperties,
+      decoys: generateDecoyTexts(config.seed, displayText),
+    }
+  }, [a11yMode, config.seed, displayText, obfuscate, isTextChild])
 
   return (
     <>
@@ -57,8 +67,13 @@ export const ProtectedEmail = forwardRef<HTMLAnchorElement, ProtectedEmailProps>
       >
         {obfuscate && isTextChild ? (
           <>
-            <span style={srOnly}>{children ?? email}</span>
+            <span style={a11y ? a11y.srStyle : srOnly}>{displayText}</span>
             <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: result.html }} />
+            {a11y?.decoys.map((d, i) => (
+              <span key={`decoy-${i}`} style={{ display: 'none' }}>
+                {d}
+              </span>
+            ))}
           </>
         ) : (
           (children ?? email)

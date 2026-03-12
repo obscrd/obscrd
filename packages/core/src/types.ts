@@ -1,8 +1,12 @@
+export type AccessibilityMode = 'standard' | 'hardened' | 'maximum'
+
 export interface ObscrdConfig {
   /** Project seed for deterministic obfuscation */
   seed: string
   /** Protection level: light adds minimal obfuscation, maximum adds all layers */
   level?: 'light' | 'medium' | 'maximum'
+  /** Accessibility mode: standard is default, hardened/maximum randomize sr-only DOM */
+  accessibilityMode?: AccessibilityMode
   /** Enable clipboard interception */
   clipboard?: boolean
   /** Enable DevTools detection */
