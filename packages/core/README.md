@@ -1,6 +1,6 @@
 # @obscrd/core
 
-Content protection engine — obfuscate text, trap scrapers, and defend against AI bots.
+Obfuscation engine — scrambles text, traps scrapers, blocks clipboard extraction.
 
 ## Install
 

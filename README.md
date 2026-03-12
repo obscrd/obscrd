@@ -3,31 +3,14 @@
 </p>
 
 <p align="center">
-  <strong>Your content, obscured.</strong>
+  Scrambles your HTML so scrapers get garbage. Humans read it normally.
 </p>
 
 <p align="center">
-  Protect your website content from scrapers, AI bots, and data theft.<br/>
-  Developer-first SDK for React.
+  <a href="https://www.npmjs.com/package/@obscrd/react"><img src="https://img.shields.io/npm/v/@obscrd/react?label=%40obscrd%2Freact" alt="npm @obscrd/react" /></a>
+  <a href="https://www.npmjs.com/package/@obscrd/core"><img src="https://img.shields.io/npm/v/@obscrd/core?label=%40obscrd%2Fcore" alt="npm @obscrd/core" /></a>
+  <a href="https://www.npmjs.com/package/@obscrd/robots"><img src="https://img.shields.io/npm/v/@obscrd/robots?label=%40obscrd%2Frobots" alt="npm @obscrd/robots" /></a>
 </p>
-
-<p align="center">
-  <a href="https://obscrd.dev">Website</a> ·
-  <a href="https://obscrd.dev/docs">Docs</a> ·
-  <a href="https://discord.gg/obscrd">Discord</a>
-</p>
-
----
-
-## Packages
-
-| Package | Description | NPM |
-|---------|------------|-----|
-| [@obscrd/core](./packages/core) | Content protection engine | [![npm](https://img.shields.io/npm/v/@obscrd/core)](https://www.npmjs.com/package/@obscrd/core) |
-| [@obscrd/react](./packages/react) | React components | [![npm](https://img.shields.io/npm/v/@obscrd/react)](https://www.npmjs.com/package/@obscrd/react) |
-| [@obscrd/robots](./packages/robots) | AI crawler blocking | [![npm](https://img.shields.io/npm/v/@obscrd/robots)](https://www.npmjs.com/package/@obscrd/robots) |
-
-## Quick Start
 
 ```bash
 npm install @obscrd/react
@@ -37,56 +20,38 @@ npx obscrd init
 ```tsx
 import { ObscrdProvider, ProtectedText, ProtectedEmail } from '@obscrd/react'
 
-function App() {
-  return (
-    <ObscrdProvider seed={process.env.OBSCRD_SEED}>
-      <ProtectedText>
-        This text is readable by humans but scrambled for scrapers.
-      </ProtectedText>
-      <ProtectedEmail email="hello@example.com" />
-    </ObscrdProvider>
-  )
-}
+<ObscrdProvider seed={process.env.OBSCRD_SEED}>
+  <ProtectedText>This text is protected from scrapers</ProtectedText>
+  <ProtectedEmail email="hello@example.com" />
+</ObscrdProvider>
 ```
 
-## What It Does
+## Features
 
-- **Text obfuscation** — Scrambles HTML while CSS makes it look normal
-- **AI honeypots** — Hidden text that talks directly to LLM scrapers
-- **Clipboard protection** — Copy produces scrambled output
-- **Contact info protection** — Emails, phones, addresses hidden from bots
-- **Image protection** — Canvas-based rendering, no direct URLs
-- **robots.txt automation** — Block 30+ AI crawlers with one function
-- **Forensic breadcrumbs** — Prove someone stole your content
-- **Accessible** — WCAG 2.2 AA compliant. All components render visually-hidden text for screen readers with `aria-hidden` on obfuscated content. Optional `hardened` and `maximum` accessibility modes randomize the a11y DOM structure to resist scraper exploitation
+- Text obfuscation — CSS reorders scrambled DOM visually
+- Honeypots — hidden prompt injections targeting LLM scrapers
+- Clipboard — copy from protected blocks produces scrambled text
+- Email/phone — RTL reversal + decoy characters, real href on interaction
+- Images — canvas rendering, no `<img>` tag in DOM
+- robots.txt — blocks 30+ AI crawlers
+- Breadcrumbs — invisible markers to prove content theft
+- WCAG 2.2 AA — screen readers unaffected, tested with VoiceOver and NVDA
 
-## Threat Model
+Stops scrapers that read raw HTML. Does not stop headless browsers or screenshots. See [SECURITY.md](./SECURITY.md) for the full threat model.
 
-obscrd protects against the most common content scraping vectors:
+## Packages
 
-**What it defends against:**
-- HTML scrapers reading `textContent` or `innerHTML`
-- AI training crawlers (GPTBot, ClaudeBot, CCBot, etc.)
-- Simple bots that parse raw HTML for emails, phones, and addresses
-- Casual copy-paste theft
-- Right-click image saving (canvas rendering serves pixels, not URLs)
-- LLM systems ingesting page content (via honeypot prompt injection)
+| Package | Description |
+|---------|------------|
+| [@obscrd/core](./packages/core) | Obfuscation engine, honeypots, clipboard, devtools |
+| [@obscrd/react](./packages/react) | React components and hooks |
+| [@obscrd/robots](./packages/robots) | robots.txt generation + server middleware |
 
-**What it does NOT defend against:**
-- Headless browsers that execute CSS and read the visually-rendered result
-- Screenshot-based scraping (OCR)
-- Determined attackers who reverse-engineer the obfuscation technique
-- Browser extensions with page access
-
-obscrd raises the cost of scraping significantly. It is not DRM — no client-side solution can be.
-The goal is to make your content harder to steal than your competitors' content.
-
-For a detailed security analysis including cryptographic properties, bypass vectors,
-and recommendations for higher security, see [SECURITY.md](./SECURITY.md).
+[Docs](https://obscrd.dev/docs) · [Discord](https://discord.gg/obscrd)
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
