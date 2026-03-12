@@ -1,6 +1,6 @@
 {
   "name": "@obscrd/core",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Content protection engine — obfuscate text, trap scrapers, defend against AI bots",
   "type": "module",
   "sideEffects": false,
