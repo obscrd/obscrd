@@ -1,4 +1,4 @@
-# Obscrd Roadmap
+# obscrd Roadmap
 
 ## v0.1 — Content Protection MVP ✅
 
@@ -64,7 +64,18 @@
 ### Core
 - ✅ Upgrade `deriveSeed` from 32-bit FNV-1a to a wider hash — birthday collisions likely after ~65K unique content blocks
 
-## v0.3 — Style & Performance
+## v0.3 — Accessibility & Obfuscation Hardening
+
+### Accessibility
+- Fix TalkBack (Android) reading individual words/characters instead of continuous text in light mode
+- Verify sr-only span behavior across TalkBack, NVDA, and VoiceOver
+
+### Font-Based Obfuscation (v1)
+- Custom web font that maps characters to different glyphs — text does not exist in the DOM at all
+- Eliminates `data-o` attribute reversal (confirmed exploitable: HN user wrote a custom de-obfuscator against the current CSS reordering approach)
+- Renders visually correct text while DOM contains meaningless character sequences
+
+## v0.4 — Style & Performance
 
 ### Style Deduplication
 - Collect CSS rules into a single injected stylesheet instead of per-component `<style>` tags
@@ -81,7 +92,7 @@
 - Astro integration plugin
 - Remix loader helper
 
-## v0.4 — Server-Side Utilities
+## v0.5 — Server-Side Utilities
 
 ### Email Masking
 - `maskEmail(email, options)` — server-side utility returning asterisk-masked email for display
@@ -92,7 +103,7 @@
 - `maskPhone(phone, options)` — `+1-555-867-5309` → `+1-555-***-****`
 - `maskAddress(address, options)` — `123 Main St, Springfield` → `*** Main St, ***`
 
-## v0.5 — Dashboard & Analytics
+## v0.6 — Dashboard & Analytics
 
 ### Project ID System
 - `npx @obscrd/core init` generates a project ID (replaces raw seed)
@@ -132,7 +143,6 @@
 
 ### Obfuscation Techniques
 - CSS `content` property injection (render text via CSS pseudo-elements, not in HTML)
-- Web font-based obfuscation (custom font that maps characters to different glyphs)
 - SVG text rendering for headlines/critical content
 
 ### Platform Expansions
