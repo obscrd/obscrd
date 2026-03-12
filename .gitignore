@@ -49,3 +49,11 @@ coverage
 
 # Plans/design docs
 docs/plans
+
+# AI tooling
+CLAUDE.md
+.claude
+.cursorrules
+.cursor
+.github/copilot*
+copilot-instructions.md
